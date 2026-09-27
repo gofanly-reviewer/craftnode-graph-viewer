@@ -1,40 +1,44 @@
 {
   "schemaVersion": 1,
-  "revision": 7,
-  "updatedAt": "2026-09-27T14:27:21.208Z",
+  "revision": 10,
+  "updatedAt": "2026-09-27T14:32:19.539Z",
   "nodes": [
     {
       "id": "CRM-1",
-      "status": "RUNNING",
+      "status": "FAILED",
       "worker": "codex exec · pid 645424",
       "startedAt": "2026-09-27T14:27:16.488Z",
-      "result": null,
-      "commit": null,
-      "proof": null,
+      "result": "no_existing_ordered_preview_frame_contract: безопасный bounded implementation невозможен по текущему контракту.",
+      "commit": "8c5e292973a6fe04f6538f0504b5448128a67ce0",
+      "proof": "Типизированный node blocker; bounded evidence commit 8c5e292973a6fe04f6538f0504b5448128a67ce0, файл docs/graph-blockers/CRM-1.json; Runner receipt ../.graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/CRM-1.json.",
       "execution": {
         "id": "2026-09-27T14-27-16-487Z-637922:CRM-1:1",
         "runId": "2026-09-27T14-27-16-487Z-637922",
         "worktree": "/home/codexrun/work/post-for-me/.graph-runner/2026-09-27T14-27-16-487Z-637922/worktrees/CRM-1",
         "receipt": "../.graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/CRM-1.json",
         "pid": 645424,
-        "sessionId": "01a0e343-696b-7522-abaf-02b4b07c4ea7"
+        "sessionId": "01a0e343-696b-7522-abaf-02b4b07c4ea7",
+        "finishedAt": "2026-09-27T14:28:41.986Z",
+        "commit": "8c5e292973a6fe04f6538f0504b5448128a67ce0"
       }
     },
     {
       "id": "PFM-2",
-      "status": "RUNNING",
+      "status": "FAILED",
       "worker": "codex exec · pid 645509",
       "startedAt": "2026-09-27T14:27:20.835Z",
-      "result": null,
-      "commit": null,
-      "proof": null,
+      "result": "missing_canonical_publication_plan_contract: безопасный bounded implementation невозможен по текущему контракту.",
+      "commit": "7606b2ebcf81bcd6e1f54808203ed29c804a56ac",
+      "proof": "Типизированный node blocker; bounded evidence commit 7606b2ebcf81bcd6e1f54808203ed29c804a56ac, файл docs/graph-blockers/PFM-2.json; Runner receipt ../.graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/PFM-2.json.",
       "execution": {
         "id": "2026-09-27T14-27-16-487Z-637922:PFM-2:1",
         "runId": "2026-09-27T14-27-16-487Z-637922",
         "worktree": "/home/codexrun/work/post-for-me/.graph-runner/2026-09-27T14-27-16-487Z-637922/worktrees/PFM-2",
         "receipt": "../.graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/PFM-2.json",
         "pid": 645509,
-        "sessionId": "01a0e343-6960-7742-a013-b8e29ed8e23c"
+        "sessionId": "01a0e343-6960-7742-a013-b8e29ed8e23c",
+        "finishedAt": "2026-09-27T14:28:31.864Z",
+        "commit": "7606b2ebcf81bcd6e1f54808203ed29c804a56ac"
       }
     },
     {

@@ -25,6 +25,13 @@
         "mode": "fresh-recon-then-bounded-change-or-typed-blocker",
         "writeZone": "one exact blocker receipt, or the existing candidate read-service plus its focused API test",
         "repoSource": "CRM-v0 worktree at current HEAD"
+      },
+      "blocker": {
+        "type": "node_blocker",
+        "code": "no_existing_ordered_preview_frame_contract",
+        "message": "В текущем CRM-контракте есть один preview URL; упорядоченной коллекции кадров и совместимого потребителя FRAME_SEQUENCE нет.",
+        "evidence": "Runner receipt .graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/CRM-1.json; bounded report commit 8c5e292973a6fe04f6538f0504b5448128a67ce0 (docs/graph-blockers/CRM-1.json).",
+        "clearsWhen": "В коде появятся доказуемый источник упорядоченных кадров и существующий потребительский контракт; затем обновить этот узел после свежего recon."
       }
     },
     {
@@ -48,6 +55,13 @@
         "mode": "fresh-recon-then-bounded-change-or-typed-blocker",
         "writeZone": "one exact blocker receipt, or existing approval/read adapter and focused tests",
         "repoSource": "post-for-me worktree at current HEAD"
+      },
+      "blocker": {
+        "type": "node_blocker",
+        "code": "missing_canonical_publication_plan_contract",
+        "message": "В checkout нет канонической формы PublicationPlan и точных полей lifecycle/destination; передавать или придумывать их небезопасно.",
+        "evidence": "Runner receipt .graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/PFM-2.json; bounded report commit 7606b2ebcf81bcd6e1f54808203ed29c804a56ac (docs/graph-blockers/PFM-2.json).",
+        "clearsWhen": "Канонический контракт PublicationPlan с точными полями и подтверждённым approve/read seam доступен в checkout; затем обновить этот узел после свежего recon."
       }
     },
     {
