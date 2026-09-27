@@ -58,11 +58,29 @@
         {
           "classification": "REAL_AUTHORITY_STOP",
           "evidence": "First canonical Runner worker turn made no edits: required session-claim failed because Codex workspace sandbox could not write the existing canonical lock directory. Re-run is bounded to the exact existing lock directory via --add-dir; this preserves the canonical shared claim store."
+        },
+        {
+          "classification": "REAL_AUTHORITY_STOP",
+          "evidence": "Canonical Runner attempt on exact origin/main cf7adb23 made no product changes. The repo session-claim helper refused with code 79: required OPUS_PLAN/assignment binding and claim-ready hooks/refusal store are absent in this runner worktree. Bypass, legacy no-plan mode, and claim-store replacement are prohibited."
         }
       ],
       "extraWritableDirs": [
         "/home/codexrun/work/CRM-v0/.claude/locks"
-      ]
+      ],
+      "currentBlocker": {
+        "type": "authority_stop",
+        "classification": "REAL_AUTHORITY_STOP",
+        "code": "canonical_session_claim_binding_unavailable",
+        "message": "Canonical CRM runner could not acquire required session claim: claim helper refused without OPUS_PLAN/assignment binding and claim-ready hooks. No product files changed.",
+        "evidence": "receipts/CRM-1-repair.json · Runner runs 2026-09-27T17-28-21-277Z-3876278 and 2026-09-27T17-33-30-000Z-204061",
+        "clearsWhen": "Provide a ratified CRM-1 OPUS_PLAN or canonical assignment binding and dispatch in a claim-ready CRM worktree with its standard hooks and canonical claim/refusal stores accessible."
+      },
+      "ownerGate": "Следующий шаг владельца: выдать CRM-1 canonical OPUS_PLAN/assignment binding и claim-ready Runner context; не включать legacy no-plan и не менять claim store.",
+      "executionGate": {
+        "status": "CLOSED",
+        "classification": "REAL_AUTHORITY_STOP",
+        "reason": "canonical_session_claim_binding_unavailable"
+      }
     },
     {
       "id": "PFM-AUTH-1",
@@ -87,6 +105,17 @@
       "reconciliation": {
         "classification": "REAL_AUTHORITY_STOP",
         "basis": "Existing identity is bearer-authenticated; the Post session shim is null; scope forbids building auth/session authority."
+      },
+      "reconciliationHistory": [
+        {
+          "classification": "REAL_AUTHORITY_STOP",
+          "evidence": "Owner-adjudicated single-owner policy reuses exact candidate/snapshot binding, but Post session shim returns null and CRM auth/me requires bearer JWT. Scope explicitly excludes building auth; no existing browser-session bridge is present."
+        }
+      ],
+      "executionGate": {
+        "status": "CLOSED",
+        "classification": "REAL_AUTHORITY_STOP",
+        "reason": "missing_authenticated_operator_session_wiring"
       }
     },
     {
@@ -94,14 +123,14 @@
       "title": "Связать план с точной целью",
       "repo": "post-for-me",
       "outcome": "Одобренный план сохраняет точный lifecycle и цель Fansly, выбранные при одобрении.",
-      "detail": "Сохранить точные lifecycle и цель при approve/read, чтобы runner исполнял только эту привязку.",
+      "detail": "Сохранить точные lifecycle и цель на всём пути approve/read, чтобы Runner исполнял только подтверждённую привязку.",
       "context": [
         "Ветка approval db870a2609…",
         "Ветка PublicationPlan 14220a…",
         "Ветка dual media 9aff715…",
-        "Задача #19371"
+        "Post for Me #19371"
       ],
-      "proof": "Узкая проверка подтверждает, что lifecycle и цель сохраняются на всём пути approve/read.",
+      "proof": "Проверки approve/read подтверждают неизменную PublicationPlan и ApprovedPublicationSnapshot для точного candidate_id и единственной цели Fansly.",
       "sourcePath": "..",
       "task": "DONE and durable: authoritative Post main cc8e9c37ddbb06988b6e8330d193356c2d15e08a contains the equivalent canonical PublicationPlan/ApprovedPublicationSnapshot contract and candidate/plan validation. The originally recorded local commit 5aadb0f is not in remote history; exact durable evidence is now the remote main tree and head receipt.",
       "outputs": [
@@ -132,14 +161,14 @@
       "id": "PFM-3",
       "title": "Опубликовать по плану в Fansly",
       "repo": "post-for-me",
-      "outcome": "Runner публикует только lifecycle и цель из одобренного плана; неопределённый ответ Step-B получает статус ambiguous без автоматического повтора.",
-      "detail": "Использовать действующий production-проверенный провайдер Fansly. Неопределённость сети не подтверждает успех и не должна запускать повторную публикацию или менять цель.",
+      "outcome": "Runner публикует только lifecycle и цель из одобренного плана; неопределённый ответ Step-B помечается ambiguous без автоматического повтора.",
+      "detail": "Использовать действующий production-проверенный Fansly provider. Сетевой timeout не подтверждает успех и не даёт права повторно публиковать или менять цель.",
       "context": [
-        "Задача #19371",
-        "Контракт точной привязки PFM-2",
+        "Post for Me #19371",
+        "Точная привязка PFM-2",
         "Доказательства для существующего Fansly provider"
       ],
-      "proof": "Independent final review PASS on 12a869ab37167e2bb63f794e60cbd61697e70d71. 196 focused tests, 773/773 pre-push, 76/76 H3 checks.",
+      "proof": "Независимая финальная проверка PASS на 12a869ab37167e2bb63f794e60cbd61697e70d71: 196 целевых тестов, 773/773 pre-push проверок и 76/76 H3 проверок.",
       "task": "DONE: exact approved plan binding, one explicit Fansly destination, durable attempt receipt, ambiguity/no blind retry, and readable result from the latest lifecycle/attempt source are implemented and proven. See receipts/PFM-3.json.",
       "workerContract": {
         "mode": "completed-bounded-implementation-and-mock-transport-proof",
@@ -150,33 +179,32 @@
     },
     {
       "id": "PFM-4",
-      "title": "Развернуть main в live",
+      "title": "Доставить интеграцию в live",
       "repo": "post-for-me",
-      "outcome": "CRM-1, PFM-2 и PFM-3 включены в main и доставлены в live действующим bounded deploy worker.",
-      "detail": "Использовать текущий путь деплоя без новых worker или инфраструктуры.",
+      "outcome": "CRM-1, PFM-2 и PFM-3 включены в main и доставлены в live действующим ограниченным deploy worker.",
+      "detail": "Использовать только текущий путь деплоя и установленный bounded deploy worker.",
       "context": [
-        "post-for-me#2",
+        "Post for Me #2",
         "Действующий bounded deploy worker",
         "Целевой SHA ветки main"
       ],
-      "proof": "Blocked until PFM-AUTH-1's existing CRM operator session is wired into Post's guarded approval endpoint. No per-profile creator binding is required under the adjudicated single-owner policy. After that, production/root apply still requires explicit owner confirmation.",
+      "proof": "Ожидает существующий authenticated CRM operator session bridge для approval. После его подтверждения root/production apply требует отдельного явного разрешения владельца.",
       "ownerGate": "Нужно подтверждение владельца перед production/root apply."
     },
     {
       "id": "PHONE_VERTICAL_SLICE_PROVEN",
       "title": "Проверить полный сценарий на телефоне",
       "repo": "post-for-me + CRM live surface",
-      "outcome": "На телефоне пройден путь: лента → просмотр плана → одобрение → публикация в точную цель Fansly → видимый PublicationResult для выбранных lifecycle и destination.",
-      "detail": "Единственный конечный узел графа. Одобрение в приложении подтверждает план, а реальную внешнюю публикацию отдельно разрешает владелец.",
+      "outcome": "На телефоне пройден путь: лента → просмотр плана → одобрение → публикация в точную цель Fansly → видимый PublicationResult, связанный с выбранными lifecycle и destination.",
+      "detail": "Единственный конечный узел программы. Одобрение в приложении подтверждает план; реальную внешнюю публикацию отдельно разрешает владелец.",
       "context": [
         "Работающая live-лента",
         "Интегрированные ветки approval, PublicationPlan и dual media",
-        "Задача #19371",
-        "post-for-me#2",
+        "Post for Me #19371",
         "Receipt live-деплоя"
       ],
-      "proof": "Зафиксировать путь на телефоне, точную цель и видимый PublicationResult, связанный с receipt публикации.",
-      "ownerGate": "Нужно подтверждение владельца перед реальной внешней публикацией в Fansly."
+      "proof": "Зафиксировать мобильный путь, точную цель и видимый PublicationResult, связанный с receipt публикации.",
+      "ownerGate": "Нужно отдельное явное разрешение владельца перед реальной внешней публикацией в Fansly."
     }
   ],
   "edges": [
