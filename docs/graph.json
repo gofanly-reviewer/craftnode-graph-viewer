@@ -1,6 +1,10 @@
 {
   "title": "Post for Me v0 — путь до проверки на телефоне",
   "source": "Исполняемый граф Architect · единый источник графа",
+  "repositoryRoots": {
+    "CRM-v0": "../../CRM-v0",
+    "post-for-me": ".."
+  },
   "nodes": [
     {
       "id": "CRM-1",
@@ -9,7 +13,19 @@
       "outcome": "Ответ для кандидата Fansly содержит URL существующих кадров превью в нужном порядке.",
       "detail": "Ответ передаёт URL кадров превью в порядке, который понимает рендерер Post for Me FRAME_SEQUENCE.",
       "context": ["Ответ CRM для чтения кандидата", "Контракт рендерера FRAME_SEQUENCE"],
-      "proof": "Узкая проверка контракта подтверждает наличие URL кадров, их порядок и совместимость с последовательностью кадров."
+      "proof": "Узкая проверка контракта подтверждает наличие URL кадров, их порядок и совместимость с последовательностью кадров.",
+      "sourcePath": "../../CRM-v0",
+      "task": "Fresh read-only recon for CRM-1. Inspect apps/crm-server/src/services/post-for-me-read-service.js and apps/crm-server/src/__tests__/post-for-me-read-api.test.js. Verify whether the current candidate response already has an ordered collection of preview-frame URLs that an existing PFM FRAME_SEQUENCE renderer consumes. Do not implement frame generation/storage or invent a renderer contract. If the current seam is only a single preview URL and no matching consumer contract exists, write a JSON blocker report to docs/graph-blockers/CRM-1.json with type=node_blocker, code=no_existing_ordered_preview_frame_contract, and the exact observed fields/files; print GRAPH_NODE_BLOCKER followed by the same JSON and exit with code 23. If the contract is present, make only the smallest compatible response change and focused test within the declared outputs.",
+      "outputs": [
+        "docs/graph-blockers/CRM-1.json",
+        "apps/crm-server/src/services/post-for-me-read-service.js",
+        "apps/crm-server/src/__tests__/post-for-me-read-api.test.js"
+      ],
+      "workerContract": {
+        "mode": "fresh-recon-then-bounded-change-or-typed-blocker",
+        "writeZone": "one exact blocker receipt, or the existing candidate read-service plus its focused API test",
+        "repoSource": "CRM-v0 worktree at current HEAD"
+      }
     },
     {
       "id": "PFM-2",
@@ -18,7 +34,21 @@
       "outcome": "Одобренный план сохраняет точный lifecycle и цель Fansly, выбранные при одобрении.",
       "detail": "Сохранить точные lifecycle и цель при approve/read, чтобы runner исполнял только эту привязку.",
       "context": ["Ветка approval db870a2609…", "Ветка PublicationPlan 14220a…", "Ветка dual media 9aff715…", "Задача #19371"],
-      "proof": "Узкая проверка подтверждает, что lifecycle и цель сохраняются на всём пути approve/read."
+      "proof": "Узкая проверка подтверждает, что lifecycle и цель сохраняются на всём пути approve/read.",
+      "sourcePath": "..",
+      "task": "Fresh read-only recon for PFM-2 in this repository. Trace the current candidate approval payload and response from components/videoItem/index.tsx through pages/api/post/like.ts and the candidate read adapter. Implement the exact lifecycle/destination pass-through only if this checkout contains one canonical PublicationPlan shape and its exact field names. Do not invent lifecycle or destination fields, change CRM storage/schema, or broaden into PFM-3. If the exact plan contract is absent, write docs/graph-blockers/PFM-2.json with type=node_blocker, code=missing_canonical_publication_plan_contract, and exact inspected paths/fields; print GRAPH_NODE_BLOCKER followed by the same JSON and exit with code 23. If it exists, make only the minimum approval/read adapter change plus focused tests in the declared outputs.",
+      "outputs": [
+        "docs/graph-blockers/PFM-2.json",
+        "pages/api/post/like.ts",
+        "pages/api/post/like.test.ts",
+        "utils/pfm.ts",
+        "utils/pfm.test.ts"
+      ],
+      "workerContract": {
+        "mode": "fresh-recon-then-bounded-change-or-typed-blocker",
+        "writeZone": "one exact blocker receipt, or existing approval/read adapter and focused tests",
+        "repoSource": "post-for-me worktree at current HEAD"
+      }
     },
     {
       "id": "PFM-3",
