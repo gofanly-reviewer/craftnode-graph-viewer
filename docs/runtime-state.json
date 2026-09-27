@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": 45,
-  "updatedAt": "2026-09-27T18:43:12.316Z",
+  "revision": 46,
+  "updatedAt": "2026-09-27T19:05:34.000Z",
   "nodes": [
     {
       "id": "CRM-1",
@@ -109,12 +109,12 @@
     },
     {
       "id": "PFM-4",
-      "status": "READY",
-      "worker": "programme owner · read-only deploy preflight",
+      "status": "BLOCKED",
+      "worker": "programme owner · read-only bounded deploy preflight",
       "startedAt": "2026-09-27T18:43:12.316Z",
-      "result": "All code dependencies are DONE. Ready at the irreversible live deployment/root-apply boundary. Issue #2 documents the exact user-service plus root-proxy path; host changes remain unapplied.",
+      "result": "GO получен. Deploy не стартовал: на host нет production PFM service/release и PFM carrier в /usr/local/libexec для существующего gofanly-owner-apply rail. Ждёт точный artifact SHA и hash-pinned carrier.",
       "commit": "28955a67b37d10af61881219ce1862ef29dba0e8",
-      "proof": "Remote Post main 28955a67b37d10af61881219ce1862ef29dba0e8; CRM main 94e11eb3bae35be7b7f97ed27a73842e8d01954c; no PFM workflow/deployment executed. See receipts/PFM-4.json.",
+      "proof": "GitHub API подтвердил Post main 28955a67b37d10af61881219ce1862ef29dba0e8. /pfm-feed/ → 301 /dashboard; systemd user service pfm-ux-playground-test — отдельный demo на 127.0.0.1:3220. sudoers разрешает только gofanly-owner-apply run; production carrier в /usr/local/libexec отсутствует. Root/system mutation не делалась.",
       "execution": {
         "id": "read-only-deploy-preflight:28955a67b37d10af61881219ce1862ef29dba0e8",
         "receipt": "receipts/PFM-4.json",
@@ -122,6 +122,12 @@
         "targetCommit": "28955a67b37d10af61881219ce1862ef29dba0e8",
         "crmDependencyCommit": "94e11eb3bae35be7b7f97ed27a73842e8d01954c",
         "hostMutation": false
+      },
+      "blocker": {
+        "code": "pfm_deploy_artifact_and_root_carrier_unavailable",
+        "classification": "REAL_AUTHORITY_STOP",
+        "observedAt": "2026-09-27T19:05:34.000Z",
+        "ownerAction": "Подготовить exact standalone artifact для Post main 28955a67b37d10af61881219ce1862ef29dba0e8 и зарегистрировать hash-pinned PFM service/proxy carrier через owner-approval rail."
       }
     },
     {

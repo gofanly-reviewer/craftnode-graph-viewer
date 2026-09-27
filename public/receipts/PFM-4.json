@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "receiptType": "programme-node-readiness",
   "nodeId": "PFM-4",
-  "status": "READY",
+  "status": "BLOCKED",
   "executionId": "read-only-deploy-preflight:28955a67b37d10af61881219ce1862ef29dba0e8",
   "worker": {
     "kind": "programme-owner-read-only-deploy-preflight",
@@ -24,8 +24,21 @@
     "code": "irreversible_deploy_root_apply",
     "action": "Install/activate the exact PFM user service and apply the /pfm-feed host proxy through the existing root approval rail.",
     "status": "OPEN",
-    "stopBeforeAction": true
+    "stopBeforeAction": true,
+    "reason": "GO received, but the precondition to execute through the existing rail is absent: no materialized target release and no installed, owner-approved PFM deploy carrier."
   },
-  "disposition": "No host files, service, process, Nginx config, CRM activation, or Fansly call was changed.",
-  "createdAt": "2026-09-27T18:43:12.316Z"
+  "disposition": "GO acknowledged; no root/system apply performed because the exact target release and owner-approved PFM carrier are absent. No Fansly API call occurred.",
+  "createdAt": "2026-09-27T18:43:12.316Z",
+  "updatedAt": "2026-09-27T19:05:34.000Z",
+  "reconciliation": {
+    "classification": "REAL_AUTHORITY_STOP",
+    "observedAt": "2026-09-27T19:05:34.000Z",
+    "evidence": [
+      "GitHub API confirms authoritative Post main commit 28955a67b37d10af61881219ce1862ef29dba0e8; direct host checkout access is unavailable to the configured git identity.",
+      "sudoers grants only /usr/local/sbin/gofanly-owner-apply run *; the rail executes only exact path+SHA entries already approved in its root-owned 0600 allowlist.",
+      "No PFM or post-for-me deployment carrier exists in /usr/local/libexec; the only PFM user service is pfm-ux-playground-test.service on 127.0.0.1:3220.",
+      "Live https://app.gofanly.com/pfm-feed/ returns 301 to /dashboard. No systemd, Nginx, CRM, or Fansly mutation was made."
+    ],
+    "nextOwnerAction": "Materialize the exact standalone release for 28955a67b37d10af61881219ce1862ef29dba0e8 and make a single-purpose PFM service/proxy carrier available through the existing owner-approval rail. Then the authorized deploy can resume without another programme approval."
+  }
 }

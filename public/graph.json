@@ -211,15 +211,15 @@
       "title": "Доставить Post feed в live",
       "repo": "post-for-me",
       "outcome": "CRM-1, PFM-2 и PFM-3 включены в main и доставлены в live действующим ограниченным deploy worker.",
-      "detail": "Все code dependencies завершены и включены в authoritative CRM-v0/main и post-for-me/main. Fresh issue #2 и curator update указывают одноразовый путь доставки: staging standalone build в user-owned release/service под codexrun на loopback, затем /pfm-feed proxy через существующий root owner-apply rail. Host apply — текущая необратимая граница.",
+      "detail": "GO получен на узкий deploy/root apply. Свежая проверка обнаружила, что готового host release и PFM root carrier на машине нет: установлен только отдельный UX playground service. Для live сначала требуется точный immutable artifact Post main 28955a67b37d10af61881219ce1862ef29dba0e8 и carrier, зарегистрированный существующим owner-approval rail. Host apply и вызов Fansly не выполнялись.",
       "context": [
         "Post for Me issue #2 and curator update #5856224343 (2026-09-27)",
         "Target: nexus-1-agent/post-for-me main 28955a67b37d10af61881219ce1862ef29dba0e8",
         "CRM dependency: nexus-1-agent/CRM-v0 main 94e11eb3bae35be7b7f97ed27a73842e8d01954c",
         "Existing root owner-apply rail for app.gofanly.com /pfm-feed proxy"
       ],
-      "proof": "CRM-1 94e11eb3bae35be7b7f97ed27a73842e8d01954c, PFM-2, PFM-3, and PFM-AUTH-1 28955a67b37d10af61881219ce1862ef29dba0e8 are integrated. Fresh issue #2 records no active PFM host service/proxy and documents user-service + root-proxy deployment. No production apply was executed.",
-      "ownerGate": "Остановиться перед установкой/активацией host service и production/root apply маршрута /pfm-feed через существующий root approval rail.",
+      "proof": "GitHub API подтвердил authoritative Post main 28955a67b37d10af61881219ce1862ef29dba0e8. На host отсутствует PFM production user service / root carrier; app.gofanly.com/pfm-feed/ возвращает 301 на /dashboard. systemctl --user показывает только pfm-ux-playground-test.service: UX playground на 127.0.0.1:3220.",
+      "ownerGate": "GO на install/activate PFM service и /pfm-feed proxy получен. Нужна регистрация и owner approval одного hash-pinned PFM deployment carrier через существующий root rail; прямой systemctl/Nginx обход запрещён.",
       "workerContract": {
         "mode": "bounded-existing-deploy-preflight-then-root-apply-gate",
         "targetCommit": "28955a67b37d10af61881219ce1862ef29dba0e8",
@@ -235,7 +235,7 @@
       "executionGate": {
         "status": "OPEN",
         "classification": "IRREVERSIBLE_DEPLOY_ROOT_APPLY",
-        "reason": "Existing Post issue #2 documents that host service/proxy wiring is absent and must pass through the root owner-apply rail."
+        "reason": "Owner GO получен; execution ждёт отсутствующий hash-pinned PFM deployment carrier и materialized artifact для authoritative SHA 28955a67b37d10af61881219ce1862ef29dba0e8."
       }
     },
     {
