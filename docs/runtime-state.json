@@ -1,23 +1,23 @@
 {
   "schemaVersion": 1,
-  "revision": 38,
-  "updatedAt": "2026-09-27T18:15:04.583Z",
+  "revision": 43,
+  "updatedAt": "2026-09-27T18:31:16.457Z",
   "nodes": [
     {
       "id": "CRM-1",
       "status": "RUNNING",
-      "worker": "codex exec · pid 4128743",
-      "startedAt": "2026-09-27T18:15:00.465Z",
+      "worker": "codex exec · pid 895435",
+      "startedAt": "2026-09-27T18:31:11.841Z",
       "result": null,
       "commit": null,
       "proof": null,
       "execution": {
-        "id": "2026-09-27T18-15-00-464Z-4124907:CRM-1:1",
-        "runId": "2026-09-27T18-15-00-464Z-4124907",
-        "worktree": "/home/codexrun/work/post-for-me/craftnode/.graph-runner/2026-09-27T18-15-00-464Z-4124907/worktrees/CRM-1",
-        "receipt": ".graph-runner/2026-09-27T18-15-00-464Z-4124907/receipts/CRM-1.json",
-        "pid": 4128743,
-        "sessionId": "01a0e413-e608-7a42-9eec-4e945a29c156"
+        "id": "2026-09-27T18-31-11-839Z-889738:CRM-1:1",
+        "runId": "2026-09-27T18-31-11-839Z-889738",
+        "worktree": "/home/codexrun/work/post-for-me/craftnode/.graph-runner/2026-09-27T18-31-11-839Z-889738/worktrees/CRM-1",
+        "receipt": ".graph-runner/2026-09-27T18-31-11-839Z-889738/receipts/CRM-1.json",
+        "pid": 895435,
+        "sessionId": "01a0e422-ba75-7371-a1cb-70be14bb0818"
       },
       "resolvedBlocker": {
         "runId": "2026-09-27T14-27-16-487Z-637922",
