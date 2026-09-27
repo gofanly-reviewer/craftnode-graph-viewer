@@ -1,30 +1,23 @@
 {
   "schemaVersion": 1,
-  "revision": 29,
-  "updatedAt": "2026-09-27T17:39:18.253Z",
+  "revision": 33,
+  "updatedAt": "2026-09-27T18:09:42.620Z",
   "nodes": [
     {
       "id": "CRM-1",
-      "status": "BLOCKED",
-      "worker": "Canonical Runner worker 01a0e3ed-e41d-7dc0-a4d4-ab8bf061529b",
-      "startedAt": "2026-09-27T17:33:30.001Z",
-      "result": "REAL_AUTHORITY_STOP: обязательный CRM session-claim отказал до правок с code 79; OPUS_PLAN/assignment binding и claim-ready hooks context отсутствуют. История запуска сохранена в receipts/CRM-1-repair.json.",
+      "status": "RUNNING",
+      "worker": "codex exec · pid 3788879",
+      "startedAt": "2026-09-27T18:09:38.551Z",
+      "result": null,
       "commit": null,
-      "proof": "receipts/CRM-1-repair.json · exact base cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3; product worktree clean; no product commit.",
+      "proof": null,
       "execution": {
-        "id": "2026-09-27T17-33-30-000Z-204061:CRM-1:1",
-        "runId": "2026-09-27T17-33-30-000Z-204061",
-        "workerThreadId": "01a0e3ed-e41d-7dc0-a4d4-ab8bf061529b",
-        "branch": "detached worktree",
-        "worktree": "/home/codexrun/work/post-for-me/craftnode/.graph-runner/2026-09-27T17-33-30-000Z-204061/worktrees/CRM-1",
-        "baseSha": "cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
-        "receipt": "receipts/CRM-1-repair.json",
-        "finishedAt": "2026-09-27T17:36:56.086Z",
-        "typedBlocker": "canonical_session_claim_binding_unavailable",
-        "attempts": [
-          "2026-09-27T17-28-21-277Z-3876278",
-          "2026-09-27T17-33-30-000Z-204061"
-        ]
+        "id": "2026-09-27T18-09-38-549Z-3785477:CRM-1:1",
+        "runId": "2026-09-27T18-09-38-549Z-3785477",
+        "worktree": "/home/codexrun/work/post-for-me/craftnode/.graph-runner/2026-09-27T18-09-38-549Z-3785477/worktrees/CRM-1",
+        "receipt": ".graph-runner/2026-09-27T18-09-38-549Z-3785477/receipts/CRM-1.json",
+        "pid": 3788879,
+        "sessionId": "01a0e40e-fc81-72b1-b168-76a0bb2bb926"
       },
       "resolvedBlocker": {
         "runId": "2026-09-27T14-27-16-487Z-637922",

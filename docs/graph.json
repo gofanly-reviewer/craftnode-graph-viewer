@@ -7,7 +7,7 @@
       "title": "Подключить существующие кадры хранилища",
       "repo": "CRM-v0",
       "outcome": "Кандидат Fansly получает упорядоченные URL кадров из канонического frame pack по точной связке post → attachment → media_id.",
-      "detail": "Источник — fansly_vault_media_local_files и B2 prefix gofanly-backups/vault-frames. Не использовать fansly_post_media_frames: это отдельный конкурентный набор. При отсутствии media_id вернуть пустую последовательность; ничего не угадывать и не запускать backfill.",
+      "detail": "Использовать fansly_vault_media_local_files и B2 prefix gofanly-backups/vault-frames. Не читать fansly_post_media_frames: это другой набор. При отсутствующем media_id вернуть пустую последовательность; не угадывать данные и не запускать backfill.",
       "context": [
         "CRM origin/main cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
         "Migration 268: fansly_post_attachments(post_id, media_id, pos)",
@@ -16,16 +16,15 @@
       ],
       "proof": "Узкие проверки доказывают точное соединение по post_id и media_id, порядок variant_idx, canonical object key и fail-closed поведение при отсутствующем media_id.",
       "sourcePath": "../../../.codex/worktrees/pfm-crm1-frames",
-      "task": "На sourceRef origin/main выполни минимальный bounded repair текущего CRM-1. Сначала сравни source commit и integrated receipts. Текущая реализация читает fansly_post_media_frames и gofanly-media, что относится к отдельному конкурентному набору. Подключи существующие vault кадры через точные связи fansly_post_attachments.post_id → media_id → fansly_vault_media_local_files WHERE pack='frame' AND b2_key IS NOT NULL. Сохраняй media_id как обязательный join: если у attachment media_id отсутствует, возвращай пустые frames без fallback/угадывания/backfill. Читай только канонический B2 путь gofanly-backups + сохранённый b2_key через имеющийся b2-backups remote, валидируй path/размер/тип, и оставь browser access fail-closed за существующим auth gate. Добавь сфокусированные regression tests, включая exact post join, порядок, null media_id, некорректный key и byte read remote. Не менять DB/schema, env, auth, storage objects или deployment. Canonical session claims are mandatory in this repo. Runner grants only the existing shared lock directory /home/codexrun/work/CRM-v0/.claude/locks as an additional writable directory so the worker can acquire the standard claim; do not redirect/replace the store, widen the grant, or bypass session-claim.",
+      "task": "Fast path, authorized by the current programme owner request: implement the smallest read-only wiring from the Post for Me candidate projection to already stored, ordered vault frame artifacts. On CRM origin/main, replace the legacy fansly_post_media_frames/gofanly-media read in the existing frame sequence service with an exact join fansly_post_attachments.post_id -> media_id -> fansly_vault_media_local_files where pack='frame' and b2_key is present; sort by variant_idx and expose the existing candidate frame URLs. Read bytes only from canonical b2-backups:gofanly-backups/<b2_key>; enforce prefix/key/type/size bounds. Keep missing media_id fail-closed, preserve the existing route auth gate, and make no DB/schema/env/auth/deploy changes. Add narrow service regression tests. Do not run BIFM session-claim, OPUS_PLAN, assignment-binding, or legacy dispatch steps: the owner explicitly selected the isolated Graph Runner fast path. The CRM CLAUDE/session-claim pre-mutation rule is localized as a legacy-path incompatibility for this assignment. Preserve the normal isolated git worktree and bounded Graph Runner commit; do not modify git integrity settings or disable an installed hook.",
       "outputs": [
         "apps/crm-server/src/services/post-for-me/media/post-for-me-frame-sequence.js",
-        "apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js",
-        "apps/crm-server/src/routes/api/pfm-preview-media.routes.js"
+        "apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js"
       ],
       "workerContract": {
         "mode": "bounded-existing-capability-wiring",
         "repoSource": "CRM-v0 origin/main cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
-        "writeZone": "Only the existing frame sequence service, its focused test, and the existing frame route; the worker may update only the existing canonical session-claim lock/audit store through this exact additional writable directory",
+        "writeZone": "Existing frame sequence service and its focused test only",
         "sourceClassification": "EXISTING_CAPABILITY_NOT_WIRED",
         "executionId": "canonical-runner-assigned"
       },
@@ -56,30 +55,12 @@
           "evidence": "Current CRM-1 reads fansly_post_media_frames/gofanly-media. CRM audits identify the Luna vault frame pack in fansly_vault_media_local_files and canonical B2 path gofanly-backups/vault-frames; the old table has no Luna rows."
         },
         {
-          "classification": "REAL_AUTHORITY_STOP",
-          "evidence": "First canonical Runner worker turn made no edits: required session-claim failed because Codex workspace sandbox could not write the existing canonical lock directory. Re-run is bounded to the exact existing lock directory via --add-dir; this preserves the canonical shared claim store."
-        },
-        {
-          "classification": "REAL_AUTHORITY_STOP",
-          "evidence": "Canonical Runner attempt on exact origin/main cf7adb23 made no product changes. The repo session-claim helper refused with code 79: required OPUS_PLAN/assignment binding and claim-ready hooks/refusal store are absent in this runner worktree. Bypass, legacy no-plan mode, and claim-store replacement are prohibited."
+          "classification": "LEGACY_PATH_INCOMPATIBILITY",
+          "evidence": "CRM CLAUDE/session-claim instructions require OPUS_PLAN/assignment and session-claim for this mutation. The current owner explicitly directed the isolated Graph Runner fast path and rejected importing that legacy machinery. No product blocker is implied by that rule."
         }
       ],
-      "extraWritableDirs": [
-        "/home/codexrun/work/CRM-v0/.claude/locks"
-      ],
-      "currentBlocker": {
-        "type": "authority_stop",
-        "classification": "REAL_AUTHORITY_STOP",
-        "code": "canonical_session_claim_binding_unavailable",
-        "message": "Canonical CRM runner could not acquire required session claim: claim helper refused without OPUS_PLAN/assignment binding and claim-ready hooks. No product files changed.",
-        "evidence": "receipts/CRM-1-repair.json · Runner runs 2026-09-27T17-28-21-277Z-3876278 and 2026-09-27T17-33-30-000Z-204061",
-        "clearsWhen": "Provide a ratified CRM-1 OPUS_PLAN or canonical assignment binding and dispatch in a claim-ready CRM worktree with its standard hooks and canonical claim/refusal stores accessible."
-      },
-      "ownerGate": "Следующий шаг владельца: выдать CRM-1 canonical OPUS_PLAN/assignment binding и claim-ready Runner context; не включать legacy no-plan и не менять claim store.",
       "executionGate": {
-        "status": "CLOSED",
-        "classification": "REAL_AUTHORITY_STOP",
-        "reason": "canonical_session_claim_binding_unavailable"
+        "status": "OPEN"
       }
     },
     {
