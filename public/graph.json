@@ -16,16 +16,16 @@
       ],
       "proof": "Узкие проверки доказывают точное соединение по post_id и media_id, порядок variant_idx, canonical object key и fail-closed поведение при отсутствующем media_id.",
       "sourcePath": "../../../.codex/worktrees/pfm-crm1-frames",
-      "task": "Fast path, authorized by the current programme owner request: implement the smallest read-only wiring from the Post for Me candidate projection to already stored, ordered vault frame artifacts. On CRM origin/main, replace the legacy fansly_post_media_frames/gofanly-media read in the existing frame sequence service with an exact join fansly_post_attachments.post_id -> media_id -> fansly_vault_media_local_files where pack='frame' and b2_key is present; sort by variant_idx and expose the existing candidate frame URLs. Read bytes only from canonical b2-backups:gofanly-backups/<b2_key>; enforce prefix/key/type/size bounds. Keep missing media_id fail-closed, preserve the existing route auth gate, and make no DB/schema/env/auth/deploy changes. Add narrow service regression tests. Do not run BIFM session-claim, OPUS_PLAN, assignment-binding, or legacy dispatch steps: the owner explicitly selected the isolated Graph Runner fast path. The CRM CLAUDE/session-claim pre-mutation rule is localized as a legacy-path incompatibility for this assignment. Preserve the normal isolated git worktree and bounded Graph Runner commit; do not modify git integrity settings or disable an installed hook.",
+      "task": "Fast path, authorized by the current programme owner request. Fresh-review the previous CRM-1 bounded commit b23ab38 against the candidate identity and canonical B2 key contract, then close the exact source-binding gaps before integration. Bind the attachment to the candidate creator via the exact fansly_posts account_id/post_id seam. Return only the first frame-bearing media_id in attachment pos order (or flatten deterministically with unique route indexes); do not merge duplicate variant indexes across attachments. Restrict b2_key to vault-frames/frames/<same media_id>_<NN>.jpg and fixed b2-backups:gofanly-backups/ remote; reject cross-media or out-of-prefix keys before rclone. Keep missing media_id fail-closed, route auth unchanged, no DB/schema/env/auth/deploy. Add tests for account binding, exact media key ownership, attachment ordering, and null media_id; run the focused CRM frame-sequence test. Do not use BIFM session-claim, OPUS_PLAN, assignment binding, or legacy dispatch. The repo CLAUDE/session-claim mutation rule is recorded as a legacy-path incompatibility for the owner-authorized isolated Graph Runner fast path. Preserve isolated worktree and bounded Git commit integrity; do not disable an installed hook.",
       "outputs": [
         "apps/crm-server/src/services/post-for-me/media/post-for-me-frame-sequence.js",
         "apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js"
       ],
       "workerContract": {
         "mode": "bounded-existing-capability-wiring",
-        "repoSource": "CRM-v0 origin/main cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
+        "repoSource": "CRM-v0 bounded Graph Runner commit b23ab38ed9f2a6a87757bf43680d35de80d625ce",
         "writeZone": "Existing frame sequence service and its focused test only",
-        "sourceClassification": "EXISTING_CAPABILITY_NOT_WIRED",
+        "sourceClassification": "MISSING_IMPLEMENTATION",
         "executionId": "canonical-runner-assigned"
       },
       "resolvedBlocker": {
@@ -41,7 +41,7 @@
         ],
         "resolution": "CRM-1 added the ordered frame URL response and authenticated read route; Post main now contains the FRAME_SEQUENCE consumer. Focused proof is attached to receipts/CRM-1.json."
       },
-      "sourceRef": "origin/main",
+      "sourceRef": "b23ab38ed9f2a6a87757bf43680d35de80d625ce",
       "reconciliationHistory": [
         {
           "classification": "STALE_INPUT",
@@ -57,6 +57,10 @@
         {
           "classification": "LEGACY_PATH_INCOMPATIBILITY",
           "evidence": "CRM CLAUDE/session-claim instructions require OPUS_PLAN/assignment and session-claim for this mutation. The current owner explicitly directed the isolated Graph Runner fast path and rejected importing that legacy machinery. No product blocker is implied by that rule."
+        },
+        {
+          "classification": "MISSING_IMPLEMENTATION",
+          "evidence": "First fast-path commit b23ab38 wires the correct vault table and fixed backup bucket, but source review found it does not bind post_id to the candidate creator account, does not reject b2 keys outside the exact vault frame prefix/media_id, and globally drops duplicate variant indexes across multi-attachment posts. Reopen the same node against the bounded commit for exact source binding."
         }
       ],
       "executionGate": {
