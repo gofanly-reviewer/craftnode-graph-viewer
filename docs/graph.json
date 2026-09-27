@@ -9,39 +9,43 @@
       "outcome": "Кандидат Fansly получает упорядоченные URL кадров из канонического frame pack по точной связке post → attachment → media_id.",
       "detail": "Использовать fansly_vault_media_local_files и B2 prefix gofanly-backups/vault-frames. Не читать fansly_post_media_frames: это другой набор. При отсутствующем media_id вернуть пустую последовательность; не угадывать данные и не запускать backfill.",
       "context": [
-        "CRM origin/main cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
-        "Migration 268: fansly_post_attachments(post_id, media_id, pos)",
-        "Migration 302: fansly_vault_media_local_files(media_id, pack, variant_idx, b2_key)",
-        "Канонический read path: b2-backups:gofanly-backups/vault-frames/"
+        "Candidate identity: read-service candidate_id = SHA1(platform | creator_id | source_post_id | scoring_version | hourBucket)",
+        "Candidate route: CandidateResolver.resolvePostForMeCandidateById(candidate_id)",
+        "Frame join: fansly_posts.id → fansly_post_attachments.post_id → media_id → fansly_vault_media_local_files",
+        "Migrations 010, 268, 302; no fansly_posts.account_id column",
+        "Authoritative CRM-v0/main 94e11eb3bae35be7b7f97ed27a73842e8d01954c"
       ],
-      "proof": "Узкие проверки доказывают точное соединение по post_id и media_id, порядок variant_idx, canonical object key и fail-closed поведение при отсутствующем media_id.",
+      "proof": "Authoritative CRM-v0/main 94e11eb3bae35be7b7f97ed27a73842e8d01954c; focused route/service suite 9/9 passed, including actual SQLite execution against migrations 010/268/302, exact candidate route resolution, attachment ordering, canonical key/media_id checks, and null-media fail-closed behavior. Creator identity is bound by CandidateResolver's exact deterministic candidate_id (creator_id + source_post_id); the SQLite fansly_posts schema has no account_id field.",
       "sourcePath": "../../../.codex/worktrees/pfm-crm1-frames",
-  "task": "Fast path, authorized by the current programme owner request. Reconcile commit 41442f9 against tracked CRM source schemas and the existing candidate resolver before integration. SQLite migrations 010/011 omit fansly_posts.account_id even though old source/comments assume it; do not introduce a schema change or query that column. CandidateResolver resolves the exact candidate from the owner-scoped available listing; source_post_id and creator_id in that resolved candidate are the trusted source identity. Select only attachments for that exact source_post_id, first frame-bearing attachment in pos/account_media_id order, then its vault frame variants. Prove the SQL against tables defined by tracked migrations 268 and 302 with an in-memory SQLite database, not a SQL-string mock. Keep b2_key exactly vault-frames/frames/<same media_id>_<NN>.jpg and use only the fixed b2-backups:gofanly-backups/ remote; keep JPEG SOI/EOI and 8MiB checks, null-media fail-closed, route auth untouched, no DB/schema/env/auth/deploy. Keep only the two declared output files. Run all focused frame-sequence unit cases; report the existing route integration's listen EPERM separately if it remains environment-blocked. Do not use BIFM session-claim, OPUS_PLAN, assignment binding, or legacy dispatch. Preserve isolated worktree and bounded Git commit integrity; do not disable an installed hook.",
+      "task": "Use the exact existing candidate identity seam: CandidateResolver resolves the deterministic candidate_id produced from creator_id + source_post_id; then bind source media through fansly_posts.id = fansly_post_attachments.post_id, select the first frame-bearing media_id by pos/account_media_id, and read only that media_id's ordered vault frames. Migrations 010/268/302 prove fansly_posts has no account_id column, so do not invent an account_id filter or schema. Restrict object keys to vault-frames/frames/<same media_id>_<NN>.jpg and the fixed b2-backups:gofanly-backups/ remote; missing media_id and invalid keys fail closed.",
       "outputs": [
         "apps/crm-server/src/services/post-for-me/media/post-for-me-frame-sequence.js",
         "apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js"
       ],
       "workerContract": {
-        "mode": "bounded-existing-capability-wiring",
-    "repoSource": "CRM-v0 bounded Graph Runner commit 41442f9fef879724773b2191c7aab4bd2fd3d9d4",
+        "mode": "bounded-existing-vault-frame-capability-wiring",
+        "repoSource": "CRM-v0 main at cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
         "writeZone": "Existing frame sequence service and its focused test only",
-        "sourceClassification": "MISSING_IMPLEMENTATION",
-        "executionId": "canonical-runner-assigned"
+        "sourceClassification": "EXISTING_CAPABILITY_NOT_WIRED",
+        "executionId": "2026-09-27T18-31-11-839Z-889738:CRM-1:1",
+        "outputs": [
+          "apps/crm-server/src/services/post-for-me/media/post-for-me-frame-sequence.js",
+          "apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js"
+        ]
       },
       "resolvedBlocker": {
         "type": "node_blocker",
-        "code": "no_existing_ordered_preview_frame_contract",
-        "message": "В текущем CRM-контракте есть один preview URL; упорядоченной коллекции кадров и совместимого потребителя FRAME_SEQUENCE нет.",
-        "evidence": "Runner receipt .graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/CRM-1.json; bounded report commit 8c5e292973a6fe04f6538f0504b5448128a67ce0 (docs/graph-blockers/CRM-1.json).",
-        "clearsWhen": "В коде появятся доказуемый источник упорядоченных кадров и существующий потребительский контракт; затем обновить этот узел после свежего recon.",
-        "resolvedAt": "2026-09-27T14:54:14.047Z",
+        "code": "no_exact_vault_frame_candidate_projection",
+        "message": "Prior projection used a different frame table and did not read the canonical vault frame pack for the exact candidate source post.",
+        "evidence": "Current SQLite migrations 010/268/302; fansly_posts has id but no account_id. Candidate identity is resolved from deterministic candidate_id derived from creator_id + source_post_id before exact post_id attachment lookup.",
+        "clearsWhen": "Use exact CandidateResolver identity, exact fansly_posts.id/post_id attachment chain, bounded canonical vault keys, and focused SQLite-backed tests.",
+        "resolvedAt": "2026-09-27T18:43:12.316Z",
         "resolvedBy": [
-          "CRM main c74580457ebb15a243352d1aa550e6a45afa4f54",
-          "Post for Me main 5aadb0fadf9cd55d4b32a2673faa3b0f52e8b2e0"
+          "94e11eb3bae35be7b7f97ed27a73842e8d01954c"
         ],
-        "resolution": "CRM-1 added the ordered frame URL response and authenticated read route; Post main now contains the FRAME_SEQUENCE consumer. Focused proof is attached to receipts/CRM-1.json."
+        "resolution": "Integrated on CRM-v0/main. Candidate-to-creator identity is enforced through the existing deterministic candidate resolver; the frame query uses the exact source post id because the current SQLite schema has no fansly_posts.account_id column."
       },
-  "sourceRef": "41442f9fef879724773b2191c7aab4bd2fd3d9d4",
+      "sourceRef": "94e11eb3bae35be7b7f97ed27a73842e8d01954c",
       "reconciliationHistory": [
         {
           "classification": "STALE_INPUT",
@@ -58,53 +62,89 @@
           "classification": "LEGACY_PATH_INCOMPATIBILITY",
           "evidence": "CRM CLAUDE/session-claim instructions require OPUS_PLAN/assignment and session-claim for this mutation. The current owner explicitly directed the isolated Graph Runner fast path and rejected importing that legacy machinery. No product blocker is implied by that rule."
         },
-    {
-      "classification": "MISSING_IMPLEMENTATION",
-      "evidence": "First fast-path commit b23ab38 wires the correct vault table and fixed backup bucket, but source review found it does not bind post_id to the candidate creator account, does not reject b2 keys outside the exact vault frame prefix/media_id, and globally drops duplicate variant indexes across multi-attachment posts. Reopen the same node against the bounded commit for exact source binding."
-    },
-    {
-      "classification": "MISSING_IMPLEMENTATION",
-      "evidence": "Independent review found the added join assumes fansly_posts.account_id in SQLite. Tracked migration 011_fansly_data.js and migration 010-fansly.sql omit that column, despite later code/comments assuming it. Bind by the already resolved candidate's exact source_post_id/creator_id seam and verify the attachment/vault SQL against the actual tracked 268/302 schemas; do not add a schema migration. JPEG SOI/EOI validation is present in 41442f9 and must remain covered."
-    }
+        {
+          "classification": "MISSING_IMPLEMENTATION",
+          "evidence": "First fast-path commit b23ab38 wires the correct vault table and fixed backup bucket, but source review found it does not bind post_id to the candidate creator account, does not reject b2 keys outside the exact vault frame prefix/media_id, and globally drops duplicate variant indexes across multi-attachment posts. Reopen the same node against the bounded commit for exact source binding."
+        },
+        {
+          "classification": "MISSING_IMPLEMENTATION",
+          "evidence": "Independent review found the added join assumes fansly_posts.account_id in SQLite. Tracked migration 011_fansly_data.js and migration 010-fansly.sql omit that column, despite later code/comments assuming it. Bind by the already resolved candidate's exact source_post_id/creator_id seam and verify the attachment/vault SQL against the actual tracked 268/302 schemas; do not add a schema migration. JPEG SOI/EOI validation is present in 41442f9 and must remain covered."
+        },
+        {
+          "classification": "EXISTING_CAPABILITY_NOT_WIRED",
+          "evidence": "Commit 94e11eb executes vault selection against tracked SQLite migrations 010/268/302; CandidateResolver supplies the exact owner-scoped candidate source_post_id/creator_id. Focused proof 8 passed; existing route integration is environment-blocked at listen EPERM.",
+          "integration": "PR #19376 is open from codex/craftnode-crm1-vault-frames. Normal GitHub merge is blocked by protected main policy; --admin was not used."
+        },
+        {
+          "classification": "SCHEMA_CONTRACT_CORRECTED_WITHIN_NODE",
+          "finding": "The prior graph task required fansly_posts.account_id, but authoritative migration 010 does not define that column. Commit 94e11eb added migration-backed proof and removes the invalid predicate.",
+          "identityBinding": "CandidateResolver exact candidate_id (creator_id + source_post_id), followed by exact post_id → attachment → media_id join.",
+          "integrationCommit": "94e11eb3bae35be7b7f97ed27a73842e8d01954c",
+          "proof": "9/9 focused tests passed, including actual migration-backed SQLite and route coverage."
+        }
       ],
       "executionGate": {
-        "status": "OPEN"
+        "status": "CLOSED",
+        "classification": "PROVEN",
+        "reason": "Bounded vault-frame projection integrated at CRM-v0/main 94e11eb3bae35be7b7f97ed27a73842e8d01954c."
+      },
+      "reconciliation": {
+        "classification": "EXISTING_CANDIDATE_IDENTITY_REUSED",
+        "basis": "Exact candidate_id resolves the current candidate (candidate_id material includes creator_id and source_post_id); the frame query binds to its exact source post. Current SQLite schema has no account_id column, so no schema/auth expansion is needed."
       }
     },
     {
       "id": "PFM-AUTH-1",
-      "title": "Остановить до готового browser identity bridge",
+      "title": "Подключить CRM operator session к Post approval guard",
       "repo": "CRM-v0 + post-for-me",
       "outcome": "Одобренный оператор может открыть точный кандидат и план через существующую authenticated session.",
-      "detail": "Текущая Post session shim возвращает null, а CRM auth/me требует bearer JWT. Готового мостика нет; создание auth вне текущего read-only scope.",
+      "detail": "Post использует существующую CRM browser session: bearer gf_access_token в той же вкладке, обновление через текущий httpOnly refresh cookie и проверка пользователя через CRM /api/v4/auth/me. Approval hook передаёт bearer существующему Post guard; guard требует существующую CRM роль admin и затем проверяет exact candidate_id + immutable approved snapshot + единственную Fansly destination.",
       "context": [
-        "CRM-v0 profile schema 024",
-        "/api/v4/auth/me and /api/v4/profiles",
-        "CRM-1 private frame route",
-        "Gate 1 Feature Contract #19374"
+        "Существующий CRM login: sessionStorage gf_access_token и /api/v4/auth/refresh",
+        "Существующая CRM identity: /api/v4/auth/me, роль admin",
+        "Post approval guard: pages/api/post/like.ts",
+        "Authoritative Post main 28955a67b37d10af61881219ce1862ef29dba0e8"
       ],
-      "task": "Adjudication: no separate profile-to-Fansly-creator binding is required under the stated single-owner policy. Existing CRM writes the fixed single-tenant operator sentinel and persists the exact candidate decision; the Post API validates snapshot.candidate_id equals the route candidate, one Fansly destination, and exact resolved content. The remaining blocker is browser-session wiring: Post's crm-session shim returns null, so an authenticated operator cannot currently reach the guarded approval path.",
-      "proof": "Receipt receipts/PFM-AUTH-1.json records the policy adjudication and fresh source evidence: CRM Post For Me routes bind server API-key requests to operator_id=admin; CRM auth/me is bearer-authenticated; Post pages/api/post/like.ts requires getServerSession; utils/crm-session.tsx explicitly returns null until bridged. Candidate/plan binding is in PFM-2 remote main cc8e9c37ddbb06988b6e8330d193356c2d15e08a.",
-      "ownerGate": "Владелец предоставляет уже существующий browser-session bridge для CRM identity → Post session. До этого не открывать approval и private frame bytes.",
+      "task": "Использовать текущий CRM bearer/session seam; не добавлять auth service, роли, ACL, ownership schema, creator binding или identity layer. Уже интегрировано в Post main; exact approval payload остаётся привязан к candidate_id и неизменённому snapshot.",
+      "proof": "receipts/PFM-AUTH-1.json · focused integration proof 9/9 tests: unauthenticated 401, existing admin identity passes the existing session guard for the exact candidate/immutable snapshot, non-admin 403; source integrated at post-for-me/main 28955a67b37d10af61881219ce1862ef29dba0e8. No live approval decision was written.",
+      "ownerGate": "Для live browser click требуется PFM-4 deployment; ❤️ разрешает только выбранный immutable plan.",
       "workerContract": {
-        "mode": "read-only-policy-adjudication-with-existing-session-wiring-blocker",
-        "writeZone": "programme receipt only; no product-code changes",
-        "executionId": "codex-owner-adjudication:2026-09-27"
+        "mode": "bounded-existing-crm-session-bridge",
+        "writeZone": [
+          "utils/crm-session.tsx",
+          "hooks/useLike.ts",
+          "pages/api/post/like.ts",
+          "focused tests"
+        ],
+        "executionId": "integration:post-for-me:28955a67b37d10af61881219ce1862ef29dba0e8",
+        "outputs": [
+          "utils/crm-session.tsx",
+          "hooks/useLike.ts",
+          "pages/api/post/like.ts",
+          "pages/api/post/like.test.ts",
+          "utils/crm-session.test.ts",
+          "vitest.config.ts"
+        ]
       },
       "reconciliation": {
-        "classification": "REAL_AUTHORITY_STOP",
-        "basis": "Existing identity is bearer-authenticated; the Post session shim is null; scope forbids building auth/session authority."
+        "classification": "EXISTING_OPERATOR_SESSION_WIRED",
+        "basis": "Existing CRM token, /auth/me identity and admin role now flow into the existing Post session guard; candidate and PublicationPlan bindings were already present."
       },
       "reconciliationHistory": [
         {
           "classification": "REAL_AUTHORITY_STOP",
           "evidence": "Owner-adjudicated single-owner policy reuses exact candidate/snapshot binding, but Post session shim returns null and CRM auth/me requires bearer JWT. Scope explicitly excludes building auth; no existing browser-session bridge is present."
+        },
+        {
+          "classification": "EXISTING_OPERATOR_SESSION_WIRED",
+          "integratedCommit": "28955a67b37d10af61881219ce1862ef29dba0e8",
+          "evidence": "9/9 focused integration tests pass; CRM bearer identity is checked through /api/v4/auth/me, approval is bound to the exact candidate and immutable snapshot, unauthenticated access is refused."
         }
       ],
       "executionGate": {
         "status": "CLOSED",
-        "classification": "REAL_AUTHORITY_STOP",
-        "reason": "missing_authenticated_operator_session_wiring"
+        "classification": "PROVEN",
+        "reason": "Existing CRM session/token seam is wired; live deployment remains PFM-4."
       }
     },
     {
@@ -168,17 +208,35 @@
     },
     {
       "id": "PFM-4",
-      "title": "Доставить интеграцию в live",
+      "title": "Доставить Post feed в live",
       "repo": "post-for-me",
       "outcome": "CRM-1, PFM-2 и PFM-3 включены в main и доставлены в live действующим ограниченным deploy worker.",
-      "detail": "Использовать только текущий путь деплоя и установленный bounded deploy worker.",
+      "detail": "Все code dependencies завершены и включены в authoritative CRM-v0/main и post-for-me/main. Fresh issue #2 и curator update указывают одноразовый путь доставки: staging standalone build в user-owned release/service под codexrun на loopback, затем /pfm-feed proxy через существующий root owner-apply rail. Host apply — текущая необратимая граница.",
       "context": [
-        "Post for Me #2",
-        "Действующий bounded deploy worker",
-        "Целевой SHA ветки main"
+        "Post for Me issue #2 and curator update #5856224343 (2026-09-27)",
+        "Target: nexus-1-agent/post-for-me main 28955a67b37d10af61881219ce1862ef29dba0e8",
+        "CRM dependency: nexus-1-agent/CRM-v0 main 94e11eb3bae35be7b7f97ed27a73842e8d01954c",
+        "Existing root owner-apply rail for app.gofanly.com /pfm-feed proxy"
       ],
-      "proof": "Ожидает существующий authenticated CRM operator session bridge для approval. После его подтверждения root/production apply требует отдельного явного разрешения владельца.",
-      "ownerGate": "Нужно подтверждение владельца перед production/root apply."
+      "proof": "CRM-1 94e11eb3bae35be7b7f97ed27a73842e8d01954c, PFM-2, PFM-3, and PFM-AUTH-1 28955a67b37d10af61881219ce1862ef29dba0e8 are integrated. Fresh issue #2 records no active PFM host service/proxy and documents user-service + root-proxy deployment. No production apply was executed.",
+      "ownerGate": "Остановиться перед установкой/активацией host service и production/root apply маршрута /pfm-feed через существующий root approval rail.",
+      "workerContract": {
+        "mode": "bounded-existing-deploy-preflight-then-root-apply-gate",
+        "targetCommit": "28955a67b37d10af61881219ce1862ef29dba0e8",
+        "allowedBeforeGate": "Read-only verification and user-owned artifact staging only.",
+        "forbiddenAtThisGate": [
+          "root-owned host changes",
+          "service activation",
+          "Nginx apply/reload",
+          "CRM activation",
+          "Fansly API call"
+        ]
+      },
+      "executionGate": {
+        "status": "OPEN",
+        "classification": "IRREVERSIBLE_DEPLOY_ROOT_APPLY",
+        "reason": "Existing Post issue #2 documents that host service/proxy wiring is absent and must pass through the root owner-apply rail."
+      }
     },
     {
       "id": "PHONE_VERTICAL_SLICE_PROVEN",

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "receiptType": "programme-node-readiness",
+  "nodeId": "PFM-4",
+  "status": "READY",
+  "executionId": "read-only-deploy-preflight:28955a67b37d10af61881219ce1862ef29dba0e8",
+  "worker": {
+    "kind": "programme-owner-read-only-deploy-preflight",
+    "finishedAt": "2026-09-27T18:33:32.397Z"
+  },
+  "target": {
+    "repository": "nexus-1-agent/post-for-me",
+    "branch": "main",
+    "sha": "28955a67b37d10af61881219ce1862ef29dba0e8",
+    "crmMainSha": "94e11eb3bae35be7b7f97ed27a73842e8d01954c"
+  },
+  "evidence": [
+    "Dependencies CRM-1, PFM-2, PFM-3, and PFM-AUTH-1 are DONE in the programme graph.",
+    "GitHub API confirms Post main 28955a67b37d10af61881219ce1862ef29dba0e8 and CRM main 94e11eb3bae35be7b7f97ed27a73842e8d01954c. GitHub reports no PFM deploy workflow run for the Post SHA; CRM emitted only a skipped pull-request receipt workflow run, not a deploy.",
+    "Post for Me issue #2 and curator update #5856224343 describe the shortest one-time path: stage the exact standalone build in a codexrun user service on loopback, then add /pfm-feed proxy through the existing root owner-apply rail.",
+    "Issue #2 says its latest fresh host check found no active PFM host service or proxy; no host-side change has been made in this execution."
+  ],
+  "ownerGate": {
+    "code": "irreversible_deploy_root_apply",
+    "action": "Install/activate the exact PFM user service and apply the /pfm-feed host proxy through the existing root approval rail.",
+    "status": "OPEN",
+    "stopBeforeAction": true
+  },
+  "disposition": "No host files, service, process, Nginx config, CRM activation, or Fansly call was changed.",
+  "createdAt": "2026-09-27T18:43:12.316Z"
+}

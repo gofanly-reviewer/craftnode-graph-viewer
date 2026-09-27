@@ -2,42 +2,55 @@
   "schemaVersion": 1,
   "receiptType": "programme-node",
   "nodeId": "PFM-AUTH-1",
-  "status": "BLOCKED",
-  "executionId": "codex-owner-adjudication:2026-09-27",
+  "status": "DONE",
+  "executionId": "integration:post-for-me:28955a67b37d10af61881219ce1862ef29dba0e8",
   "worker": {
-    "kind": "codex-independent-read-only-audit+programme-owner-adjudication",
-    "threadId": "01a0e324-96bd-76c3-9017-b62f417720d1",
-    "finishedAt": "2026-09-27T15:20:57.061Z",
-    "adjudicatedAt": "2026-09-27T17:23:45.000Z"
+    "kind": "programme-owner-bounded-session-bridge",
+    "finishedAt": "2026-09-27T18:33:32.397Z"
   },
-  "blocker": {
-    "type": "node_blocker",
-    "code": "missing_authenticated_operator_session_wiring",
-    "message": "The separate profile-to-creator binding is not required under the owner-adjudicated single-owner policy. The existing Post approval endpoint requires a session, but its CRM session shim returns null, so no authenticated operator can currently reach the exact candidate/plan approval path.",
-    "evidence": [
-      "Owner policy: one private operator; explicit approval of one immutable candidate/plan authorizes only that plan; no profile-to-creator ACL requested.",
-      "CRM Post For Me routes attach fixed single-tenant operator_id=admin only after INTERNAL_API_KEY middleware.",
-      "Post remote main cc8e9c37ddbb06988b6e8330d193356c2d15e08a pages/api/post/like.ts requires getServerSession and validates candidate_id against the exact PublicationPlan snapshot.",
-      "Post utils/crm-session.tsx: useSession/getServerSession return null; source comment says CRM identity bridge is not implemented.",
-      "CRM /api/v4/auth/me requires bearer JWT; no existing bridge from that identity to Post session was found."
+  "implementation": {
+    "repository": "nexus-1-agent/post-for-me",
+    "branch": "main",
+    "commit": "28955a67b37d10af61881219ce1862ef29dba0e8",
+    "files": [
+      "utils/crm-session.tsx",
+      "hooks/useLike.ts",
+      "pages/api/post/like.ts",
+      "pages/api/post/like.test.ts",
+      "utils/crm-session.test.ts",
+      "vitest.config.ts"
     ],
-    "clearsWhen": "Wire the already-existing CRM operator identity into Post's existing getServerSession guard without adding roles, ACLs, ownership tables, Gate-1 scope, or a new auth service; verify the authenticated click is bound to exactly candidate_id + immutable approved snapshot + its one Fansly destination."
+    "sessionSeam": "Reuse same-tab gf_access_token; refresh through the existing CRM httpOnly cookie; validate via CRM /api/v4/auth/me; pass that bearer to the existing Post getServerSession guard.",
+    "authorization": "Require the existing CRM admin role for the approval write. Existing Post validation still binds the request to one candidate_id, one immutable approved PublicationPlan snapshot, exact content, and one Fansly destination.",
+    "explicitlyNotAdded": [
+      "auth service",
+      "roles",
+      "ACL framework",
+      "ownership table",
+      "creator binding",
+      "generalized identity layer"
+    ]
   },
-  "disposition": {
-    "graphDelta": false,
-    "reason": "The owner policy resolves the authority decision at single-owner granularity; exact candidate and plan binding already exist. The previous creator-ownership blocker was over-scoped. A distinct existing-session wiring blocker remains and must be proven before private operator actions are available.",
-    "implementation": "none; read-only audit and policy adjudication only"
+  "proof": {
+    "command": "vitest run --config vitest.config.ts pages/api/post/like.test.ts utils/crm-session.test.ts",
+    "result": "2 test files passed; 9 tests passed.",
+    "cases": [
+      "No bearer token returns 401 before any CRM request.",
+      "An authenticated non-admin CRM identity returns 403 before the approval write.",
+      "The existing admin identity contract can approve only the exact candidate and matching immutable snapshot; CRM receives the same candidate ID and idempotency key.",
+      "The session adapter validates bearer identity through the existing CRM /api/v4/auth/me endpoint."
+    ],
+    "limitation": "No live CRM bearer token or selected production candidate was available in this execution environment; no durable operator approval decision or external Fansly publication was written. This is focused integration proof against the existing /auth/me response contract."
   },
-  "createdAt": "2026-09-27T15:20:57.061Z",
   "adjudication": {
-    "decision": "no_new_authorization_framework",
-    "productPolicy": "single-owner private operator surface; an authenticated authorized operator explicitly pressing the heart on an exact candidate/immutable PublicationPlan approves only that plan",
-    "reusedBindings": [
-      "single-tenant CRM operator sentinel from server-to-server apiKeyAuth",
-      "approval decision persists exact candidate_id",
-      "Post API requires authenticated session and validates snapshot candidate/destination/content",
-      "CRM PFM-3 binds publication to approved lifecycle/plan and durable attempt receipt"
-    ],
-    "remainingEvidenceGap": "the Post app's existing session adapter is currently a null shim, not a CRM operator identity bridge"
+    "decision": "existing_single_owner_operator_authority_reused",
+    "productPolicy": "An authenticated existing authorized operator pressing the heart approves only that exact immutable candidate/plan. It grants no authority for another candidate, destination, changed plan, or future automatic publication.",
+    "graphDelta": false
+  },
+  "createdAt": "2026-09-27T18:33:32.397Z",
+  "finishedAt": "2026-09-27T18:43:12.316Z",
+  "sourceDependencies": {
+    "crmMain": "94e11eb3bae35be7b7f97ed27a73842e8d01954c",
+    "postMain": "28955a67b37d10af61881219ce1862ef29dba0e8"
   }
 }

@@ -1,23 +1,27 @@
 {
   "schemaVersion": 1,
-  "revision": 43,
-  "updatedAt": "2026-09-27T18:31:16.457Z",
+  "revision": 45,
+  "updatedAt": "2026-09-27T18:43:12.316Z",
   "nodes": [
     {
       "id": "CRM-1",
-      "status": "RUNNING",
-      "worker": "codex exec · pid 895435",
+      "status": "DONE",
+      "worker": "codex exec · pid 895435 · integrated to CRM-v0/main",
       "startedAt": "2026-09-27T18:31:11.841Z",
-      "result": null,
-      "commit": null,
-      "proof": null,
+      "result": "Vault frame projection is integrated against the existing exact candidate identity and post attachment seam.",
+      "commit": "94e11eb3bae35be7b7f97ed27a73842e8d01954c",
+      "proof": "Bounded 2-file commit 94e11eb3bae35be7b7f97ed27a73842e8d01954c; focused service/route/SQLite suite 9/9 passed.",
       "execution": {
         "id": "2026-09-27T18-31-11-839Z-889738:CRM-1:1",
         "runId": "2026-09-27T18-31-11-839Z-889738",
         "worktree": "/home/codexrun/work/post-for-me/craftnode/.graph-runner/2026-09-27T18-31-11-839Z-889738/worktrees/CRM-1",
-        "receipt": ".graph-runner/2026-09-27T18-31-11-839Z-889738/receipts/CRM-1.json",
+        "receipt": "receipts/CRM-1.json",
         "pid": 895435,
-        "sessionId": "01a0e422-ba75-7371-a1cb-70be14bb0818"
+        "sessionId": "01a0e422-ba75-7371-a1cb-70be14bb0818",
+        "finishedAt": "2026-09-27T18:33:44.089Z",
+        "commit": "94e11eb3bae35be7b7f97ed27a73842e8d01954c",
+        "integratedAt": "2026-09-27T18:43:12.316Z",
+        "integratedBranch": "main"
       },
       "resolvedBlocker": {
         "runId": "2026-09-27T14-27-16-487Z-637922",
@@ -31,19 +35,23 @@
     },
     {
       "id": "PFM-AUTH-1",
-      "status": "BLOCKED",
-      "worker": "Read-only independent audit thread 01a0e324-96bd-76c3-9017-b62f417720d1",
-      "startedAt": "2026-09-27T14:56:00.000Z",
-      "result": "The owner adjudicated that single-owner authorization is the existing product decision and no profile-to-Fansly-creator ACL is needed. The exact candidate and immutable PublicationPlan are bound by the current approval contracts. BLOCKED pending wiring/evidence: Post's existing CRM session adapter returns null, so authenticated operator identity is not wired to the existing approval guard.",
-      "commit": null,
-      "proof": "receipts/PFM-AUTH-1.json · read-only audit + owner policy adjudication; no code/schema change. No new auth service/roles/ACL/ownership table.",
+      "status": "DONE",
+      "worker": "programme owner · bounded existing CRM session bridge",
+      "startedAt": "2026-09-27T18:43:12.316Z",
+      "result": "Existing CRM bearer/session now reaches the existing Post approval guard. Exact candidate and immutable PublicationPlan binding remain enforced; no broader authorization framework added.",
+      "commit": "28955a67b37d10af61881219ce1862ef29dba0e8",
+      "proof": "Focused integration proof: 2 test files, 9/9 tests passed. Unauthenticated 401; existing CRM admin identity path accepts the exact candidate/snapshot contract; non-admin 403. No live approval decision was written.",
       "execution": {
-        "id": "codex-owner-adjudication:2026-09-27",
-        "workerThreadId": "01a0e324-96bd-76c3-9017-b62f417720d1",
+        "id": "integration:post-for-me:28955a67b37d10af61881219ce1862ef29dba0e8",
+        "branch": "main",
+        "integratedCommit": "28955a67b37d10af61881219ce1862ef29dba0e8",
         "receipt": "receipts/PFM-AUTH-1.json",
-        "finishedAt": "2026-09-27T15:20:57.061Z",
-        "typedBlocker": "missing_authenticated_operator_session_wiring",
-        "adjudication": "single-owner policy removes need for profile-to-creator ACL; existing exact candidate/plan bindings reused"
+        "finishedAt": "2026-09-27T18:43:12.316Z",
+        "testFiles": [
+          "pages/api/post/like.test.ts",
+          "utils/crm-session.test.ts"
+        ],
+        "testsPassed": 9
       }
     },
     {
@@ -101,20 +109,27 @@
     },
     {
       "id": "PFM-4",
-      "status": "BLOCKED",
-      "worker": null,
-      "startedAt": null,
-      "result": "Blocked by PFM-AUTH-1 existing-session wiring gap: no Post browser CRM operator session is currently available (crm-session returns null). PFM-2 remote durability, PFM-3 and CRM-1 are proven; no deploy/activation began.",
-      "commit": null,
-      "proof": "Dependency receipts confirm code completion and Post remote main cc8e9c37. PFM-AUTH-1 adjudication/remaining evidence gap is recorded in receipts/PFM-AUTH-1.json. Production/root apply remains an explicit owner gate.",
-      "execution": null
+      "status": "READY",
+      "worker": "programme owner · read-only deploy preflight",
+      "startedAt": "2026-09-27T18:43:12.316Z",
+      "result": "All code dependencies are DONE. Ready at the irreversible live deployment/root-apply boundary. Issue #2 documents the exact user-service plus root-proxy path; host changes remain unapplied.",
+      "commit": "28955a67b37d10af61881219ce1862ef29dba0e8",
+      "proof": "Remote Post main 28955a67b37d10af61881219ce1862ef29dba0e8; CRM main 94e11eb3bae35be7b7f97ed27a73842e8d01954c; no PFM workflow/deployment executed. See receipts/PFM-4.json.",
+      "execution": {
+        "id": "read-only-deploy-preflight:28955a67b37d10af61881219ce1862ef29dba0e8",
+        "receipt": "receipts/PFM-4.json",
+        "finishedAt": "2026-09-27T18:43:12.316Z",
+        "targetCommit": "28955a67b37d10af61881219ce1862ef29dba0e8",
+        "crmDependencyCommit": "94e11eb3bae35be7b7f97ed27a73842e8d01954c",
+        "hostMutation": false
+      }
     },
     {
       "id": "PHONE_VERTICAL_SLICE_PROVEN",
       "status": "BLOCKED",
       "worker": null,
       "startedAt": null,
-      "result": null,
+      "result": "Awaiting PFM-4 live deployment, real operator browser approval, playable candidate media, and the separate real Fansly publication gate.",
       "commit": null,
       "proof": null
     }
