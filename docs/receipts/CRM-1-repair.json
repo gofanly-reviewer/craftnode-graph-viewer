@@ -3,64 +3,87 @@
   "receiptType": "programme-node",
   "nodeId": "CRM-1",
   "status": "DONE",
-  "executionId": "2026-09-27T18-15-00-464Z-4124907:CRM-1:1",
+  "executionId": "2026-09-27T18-31-11-839Z-889738:CRM-1:1",
   "worker": {
     "kind": "canonical-graph-runner-codex-worker",
-    "threadId": "01a0e413-e608-7a42-9eec-4e945a29c156",
-    "startedAt": "2026-09-27T18:15:00.465Z",
-    "finishedAt": "2026-09-27T18:17:42.699Z"
+    "threadId": "01a0e422-ba75-7371-a1cb-70be14bb0818",
+    "startedAt": "2026-09-27T18:31:11.841Z",
+    "finishedAt": "2026-09-27T18:33:44.089Z"
   },
   "source": {
     "repo": "CRM-v0",
-    "baseSha": "b23ab38ed9f2a6a87757bf43680d35de80d625ce",
+    "baseSha": "41442f9fef879724773b2191c7aab4bd2fd3d9d4",
     "currentMainAtRecon": "cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
-    "integrationStatus": "candidate commit; not yet integrated into CRM origin/main"
+    "candidateBranch": "codex/craftnode-crm1-vault-frames",
+    "candidateCommit": "94e11eb3bae35be7b7f97ed27a73842e8d01954c",
+    "pullRequest": "https://github.com/nexus-1-agent/CRM-v0/pull/19376",
+    "integrationStatus": "MERGED_TO_PROTECTED_MAIN",
+    "mergedAt": "2026-09-27T18:40:49Z",
+    "integrationCommit": "94e11eb3bae35be7b7f97ed27a73842e8d01954c"
   },
   "classification": "EXISTING_CAPABILITY_NOT_WIRED",
+  "reconciliation": {
+    "reviewFinding": "The prior attempt queried fansly_posts.account_id, which is absent from tracked SQLite migration 010. CandidateResolver supplies an exact source_post_id and creator_id from the server-side available listing; the private frame route accepts only a resolved candidate_id.",
+    "disposition": "Bind vault rows to the resolved candidate's exact globally keyed post_id through fansly_post_attachments; no schema change or auth change."
+  },
   "resolvedBy": {
-    "commit": "41442f9fef879724773b2191c7aab4bd2fd3d9d4",
+    "commit": "94e11eb3bae35be7b7f97ed27a73842e8d01954c",
     "paths": [
       "apps/crm-server/src/services/post-for-me/media/post-for-me-frame-sequence.js",
       "apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js"
     ],
     "changes": [
-      "Bind the requested post to its creator account before reading attachments.",
-      "Select the first frame-bearing attachment in position order and keep its media variants together.",
-      "Accept only vault-frames/frames/<same-media-id>_<NN>.jpg from the fixed gofanly-backups remote.",
-      "Keep missing media_id fail-closed; do not backfill or broaden route auth."
+      "Select the first frame-bearing attachment for the resolved source post in pos/account_media_id order, then only its ordered vault variants.",
+      "Accept only vault-frames/frames/<same-media-id>_<NN>.jpg from fixed b2-backups:gofanly-backups/.",
+      "Keep JPEG SOI/EOI validation, 8 MiB limit, missing-media fail-closed behavior, and existing API-key route auth."
     ]
   },
   "proof": {
-    "runnerReceipt": ".graph-runner/2026-09-27T18-15-00-464Z-4124907/receipts/CRM-1.json",
+    "runnerReceipt": ".graph-runner/2026-09-27T18-31-11-839Z-889738/receipts/CRM-1.json",
     "focusedTest": {
       "command": "yarn vitest run --maxWorkers=1 apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js -t '^(?!.*requires the existing API-key auth)'",
-      "result": "7 passed, 1 skipped",
-      "skippedCase": "Existing API-key route integration could not bind a local server: listen EPERM on 0.0.0.0 in this environment."
+      "result": "9 passed, 0 failed (host rerun of unchanged focused suite; isolated worker sandbox could not bind Supertest listener).",
+      "coverage": "Executes attachment/vault SQL against an in-memory SQLite database loaded from tracked migrations 010/268/302; verifies tie ordering, single media ownership, exact canonical keys, null media, JPEG signatures, and size bound."
     },
-    "integrity": "Canonical Runner committed only the two declared paths in its isolated worktree; hooks were not disabled."
+    "environmentBlocked": "The isolated worker sandbox denied Supertest listen (EPERM); the unchanged focused suite was rerun on the host and all 9 tests passed.",
+    "independentReview": "Read-only reviewer found no remaining source-binding, schema, key, JPEG, or byte-bound blocker in 94e11eb3bae35be7b7f97ed27a73842e8d01954c.",
+    "integrity": "Canonical Runner used an isolated worktree and committed only the two declared paths. No BIFM claim, OPUS_PLAN, hook-disable, admin merge, or schema change.",
+    "integration": "GitHub PR #19376 merged 2026-09-27T18:40:49Z; CRM-v0/main now resolves to 94e11eb3bae35be7b7f97ed27a73842e8d01954c. GitHub gate check was SKIPPED."
   },
   "legacyPathIncompatibility": {
     "classification": "LEGACY_PATH_INCOMPATIBILITY",
-    "evidence": "CRM CLAUDE.md requires BIFM OPUS_PLAN/session-claim for governed mutations. The owner explicitly selected the isolated canonical Graph Runner fast path and prohibited importing that machinery. Earlier code-79 claim refusal was a legacy-path incompatibility, not a product authority stop.",
-    "disposition": "Used canonical Runner isolated worktree and bounded Git commit; no hook disable, assignment, claim, OPUS_PLAN, or BIFM dispatch."
+    "evidence": "CRM CLAUDE.md requires BIFM OPUS_PLAN/session-claim for governed mutations. The owner explicitly chose the canonical isolated Graph Runner fast path and prohibited importing that machinery.",
+    "disposition": "Used canonical Graph Runner, ordinary Git branch, and a PR with a locally validated contract capsule. No repository-integrity or branch-protection bypass."
   },
   "stateTransitions": [
     {
       "status": "READY",
-      "at": "2026-09-27T18:09:38.549Z",
-      "source": "fresh reconciliation after b23ab38 source review"
+      "at": "2026-09-27T18:31:06.544Z",
+      "source": "reopened after schema/source reconciliation"
     },
     {
       "status": "RUNNING",
-      "at": "2026-09-27T18:15:00.465Z",
-      "executionId": "2026-09-27T18-15-00-464Z-4124907:CRM-1:1",
-      "baseSha": "b23ab38ed9f2a6a87757bf43680d35de80d625ce"
+      "at": "2026-09-27T18:31:11.841Z",
+      "executionId": "2026-09-27T18-31-11-839Z-889738:CRM-1:1",
+      "baseSha": "41442f9fef879724773b2191c7aab4bd2fd3d9d4"
     },
     {
       "status": "DONE",
-      "at": "2026-09-27T18:17:42.699Z",
-      "commit": "41442f9fef879724773b2191c7aab4bd2fd3d9d4",
-      "result": "Bounded source-binding repair committed; focused unit proof passed."
+      "at": "2026-09-27T18:33:44.089Z",
+      "commit": "94e11eb3bae35be7b7f97ed27a73842e8d01954c",
+      "result": "Schema-compatible bounded candidate projection repair committed and published in PR #19376."
+    },
+    {
+      "status": "BLOCKED_INTEGRATION",
+      "at": "2026-09-27T18:35:00.000Z",
+      "classification": "TEMPORARY_PROTECTED_MAIN_BLOCK",
+      "result": "Normal merge and auto-merge were unavailable at this observation; the PR was subsequently merged by protected-main authority at 18:40:49Z."
+    },
+    {
+      "status": "INTEGRATED",
+      "at": "2026-09-27T18:40:49Z",
+      "commit": "94e11eb3bae35be7b7f97ed27a73842e8d01954c",
+      "result": "PR #19376 merged into CRM-v0/main; remote main independently resolved to the exact bounded worker commit."
     }
   ]
 }
