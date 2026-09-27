@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "revision": 1,
+  "updatedAt": "2026-09-27T13:32:32.403Z",
+  "nodes": [
+    {
+      "id": "CRM-1",
+      "status": "READY",
+      "worker": null,
+      "startedAt": null,
+      "result": null,
+      "commit": null,
+      "proof": null
+    },
+    {
+      "id": "PFM-2",
+      "status": "READY",
+      "worker": null,
+      "startedAt": null,
+      "result": null,
+      "commit": null,
+      "proof": null
+    },
+    {
+      "id": "PFM-3",
+      "status": "BLOCKED",
+      "worker": null,
+      "startedAt": null,
+      "result": null,
+      "commit": null,
+      "proof": null
+    },
+    {
+      "id": "PFM-4",
+      "status": "BLOCKED",
+      "worker": null,
+      "startedAt": null,
+      "result": null,
+      "commit": null,
+      "proof": null
+    },
+    {
+      "id": "PHONE_VERTICAL_SLICE_PROVEN",
+      "status": "BLOCKED",
+      "worker": null,
+      "startedAt": null,
+      "result": null,
+      "commit": null,
+      "proof": null
+    }
+  ]
+}
