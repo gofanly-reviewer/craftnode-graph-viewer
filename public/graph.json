@@ -16,14 +16,14 @@
       ],
       "proof": "Узкие проверки доказывают точное соединение по post_id и media_id, порядок variant_idx, canonical object key и fail-closed поведение при отсутствующем media_id.",
       "sourcePath": "../../../.codex/worktrees/pfm-crm1-frames",
-      "task": "Fast path, authorized by the current programme owner request. Fresh-review the previous CRM-1 bounded commit b23ab38 against the candidate identity and canonical B2 key contract, then close the exact source-binding gaps before integration. Bind the attachment to the candidate creator via the exact fansly_posts account_id/post_id seam. Return only the first frame-bearing media_id in attachment pos order (or flatten deterministically with unique route indexes); do not merge duplicate variant indexes across attachments. Restrict b2_key to vault-frames/frames/<same media_id>_<NN>.jpg and fixed b2-backups:gofanly-backups/ remote; reject cross-media or out-of-prefix keys before rclone. Keep missing media_id fail-closed, route auth unchanged, no DB/schema/env/auth/deploy. Add tests for account binding, exact media key ownership, attachment ordering, and null media_id; run the focused CRM frame-sequence test. Do not use BIFM session-claim, OPUS_PLAN, assignment binding, or legacy dispatch. The repo CLAUDE/session-claim mutation rule is recorded as a legacy-path incompatibility for the owner-authorized isolated Graph Runner fast path. Preserve isolated worktree and bounded Git commit integrity; do not disable an installed hook.",
+  "task": "Fast path, authorized by the current programme owner request. Reconcile commit 41442f9 against tracked CRM source schemas and the existing candidate resolver before integration. SQLite migrations 010/011 omit fansly_posts.account_id even though old source/comments assume it; do not introduce a schema change or query that column. CandidateResolver resolves the exact candidate from the owner-scoped available listing; source_post_id and creator_id in that resolved candidate are the trusted source identity. Select only attachments for that exact source_post_id, first frame-bearing attachment in pos/account_media_id order, then its vault frame variants. Prove the SQL against tables defined by tracked migrations 268 and 302 with an in-memory SQLite database, not a SQL-string mock. Keep b2_key exactly vault-frames/frames/<same media_id>_<NN>.jpg and use only the fixed b2-backups:gofanly-backups/ remote; keep JPEG SOI/EOI and 8MiB checks, null-media fail-closed, route auth untouched, no DB/schema/env/auth/deploy. Keep only the two declared output files. Run all focused frame-sequence unit cases; report the existing route integration's listen EPERM separately if it remains environment-blocked. Do not use BIFM session-claim, OPUS_PLAN, assignment binding, or legacy dispatch. Preserve isolated worktree and bounded Git commit integrity; do not disable an installed hook.",
       "outputs": [
         "apps/crm-server/src/services/post-for-me/media/post-for-me-frame-sequence.js",
         "apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js"
       ],
       "workerContract": {
         "mode": "bounded-existing-capability-wiring",
-        "repoSource": "CRM-v0 bounded Graph Runner commit b23ab38ed9f2a6a87757bf43680d35de80d625ce",
+    "repoSource": "CRM-v0 bounded Graph Runner commit 41442f9fef879724773b2191c7aab4bd2fd3d9d4",
         "writeZone": "Existing frame sequence service and its focused test only",
         "sourceClassification": "MISSING_IMPLEMENTATION",
         "executionId": "canonical-runner-assigned"
@@ -41,7 +41,7 @@
         ],
         "resolution": "CRM-1 added the ordered frame URL response and authenticated read route; Post main now contains the FRAME_SEQUENCE consumer. Focused proof is attached to receipts/CRM-1.json."
       },
-      "sourceRef": "b23ab38ed9f2a6a87757bf43680d35de80d625ce",
+  "sourceRef": "41442f9fef879724773b2191c7aab4bd2fd3d9d4",
       "reconciliationHistory": [
         {
           "classification": "STALE_INPUT",
@@ -58,10 +58,14 @@
           "classification": "LEGACY_PATH_INCOMPATIBILITY",
           "evidence": "CRM CLAUDE/session-claim instructions require OPUS_PLAN/assignment and session-claim for this mutation. The current owner explicitly directed the isolated Graph Runner fast path and rejected importing that legacy machinery. No product blocker is implied by that rule."
         },
-        {
-          "classification": "MISSING_IMPLEMENTATION",
-          "evidence": "First fast-path commit b23ab38 wires the correct vault table and fixed backup bucket, but source review found it does not bind post_id to the candidate creator account, does not reject b2 keys outside the exact vault frame prefix/media_id, and globally drops duplicate variant indexes across multi-attachment posts. Reopen the same node against the bounded commit for exact source binding."
-        }
+    {
+      "classification": "MISSING_IMPLEMENTATION",
+      "evidence": "First fast-path commit b23ab38 wires the correct vault table and fixed backup bucket, but source review found it does not bind post_id to the candidate creator account, does not reject b2 keys outside the exact vault frame prefix/media_id, and globally drops duplicate variant indexes across multi-attachment posts. Reopen the same node against the bounded commit for exact source binding."
+    },
+    {
+      "classification": "MISSING_IMPLEMENTATION",
+      "evidence": "Independent review found the added join assumes fansly_posts.account_id in SQLite. Tracked migration 011_fansly_data.js and migration 010-fansly.sql omit that column, despite later code/comments assuming it. Bind by the already resolved candidate's exact source_post_id/creator_id seam and verify the attachment/vault SQL against the actual tracked 268/302 schemas; do not add a schema migration. JPEG SOI/EOI validation is present in 41442f9 and must remain covered."
+    }
       ],
       "executionGate": {
         "status": "OPEN"
