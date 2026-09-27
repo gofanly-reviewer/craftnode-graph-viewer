@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "receiptType": "programme-node",
+  "nodeId": "CRM-1",
+  "status": "DONE",
+  "executionId": "codex-agent:01a0e320-1f1b-7e61-b9d9-6df34b41e700",
+  "worker": {
+    "kind": "codex-agent-thread",
+    "threadId": "01a0e320-1f1b-7e61-b9d9-6df34b41e700",
+    "branch": "codex/pfm-crm1-frames",
+    "worktree": "/home/codexrun/.codex/worktrees/pfm-crm1-frames",
+    "startedAt": "2026-09-27T13:54:56.000Z",
+    "finishedAt": "2026-09-27T14:31:34.000Z"
+  },
+  "codeCommit": "b7cbbd324c",
+  "integrationCommit": "c74580457ebb15a243352d1aa550e6a45afa4f54",
+  "committedPaths": [
+    "apps/crm-server/src/routes/api/pfm-preview-media.routes.js",
+    "apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js",
+    "apps/crm-server/src/services/post-for-me/media/post-for-me-frame-sequence.js",
+    "docs/architecture/route-mount-map.generated.json",
+    "docs/architecture/route-mount-map.generated.md"
+  ],
+  "proof": {
+    "focusedTests": {
+      "passed": 6,
+      "failed": 0
+    },
+    "pluginCrmTests": {
+      "passed": 149,
+      "failed": 0
+    },
+    "commitGates": "passed",
+    "mainIntegration": "fast-forward push accepted; remote main verified at integrationCommit",
+    "branchProtectionNotice": "GitHub reported required release-judge-gate status check expected and bypassed on the direct main push."
+  },
+  "integratedAt": "2026-09-27T14:44:48.170Z",
+  "priorRunnerAttempt": {
+    "runId": "2026-09-27T14-27-16-487Z-637922",
+    "status": "DONE",
+    "blocker": "no_existing_ordered_preview_frame_contract",
+    "blockerCommit": "8c5e292973a6fe04f6538f0504b5448128a67ce0",
+    "receipt": ".graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/CRM-1.json",
+    "resolvedBy": [
+      "CRM main c74580457ebb15a243352d1aa550e6a45afa4f54",
+      "Post for Me main 5aadb0fadf9cd55d4b32a2673faa3b0f52e8b2e0"
+    ]
+  },
+  "resolution": "The typed blocker described the then-current old Post checkout; CRM-1 implementation supplies ordered stored frame URLs and the integrated Post main contains the FRAME_SEQUENCE consumer. This resolution is based on both repository commits."
+}

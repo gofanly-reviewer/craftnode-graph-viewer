@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "receiptType": "programme-node",
+  "nodeId": "PFM-3",
+  "status": "DONE",
+  "executionId": "codex-owner-followup:01a0dff8-14e5-7391-8805-4209fd2978cd",
+  "worker": {
+    "kind": "codex-programme-owner-followup",
+    "threadId": "01a0dff8-14e5-7391-8805-4209fd2978cd",
+    "branch": "codex/pfm-pub-plan-bridge",
+    "worktree": "/home/codexrun/.codex/worktrees/pfm-pub-plan-bridge",
+    "startedAt": "2026-09-27T15:09:06.559Z",
+    "finishedAt": "2026-09-27T15:26:45.000Z"
+  },
+  "codeCommits": [
+    "1c02b1669bdadf6fcbc15bfc57b2d343684d825c",
+    "3270a8a6c9dda8fda06cca0cd0702395d3dda589",
+    "8786f88168ddb51ad22b82eae78157d5be960e47",
+    "12a869ab37167e2bb63f794e60cbd61697e70d71"
+  ],
+  "codeCommit": "12a869ab37167e2bb63f794e60cbd61697e70d71",
+  "integration": {
+    "target": "CRM-v0 remote main",
+    "method": "direct fast-forward push",
+    "remoteMainVerified": "12a869ab37167e2bb63f794e60cbd61697e70d71",
+    "branchProtectionNotice": "GitHub reported required release-judge-gate status check expected and bypassed on direct main push."
+  },
+  "proof": {
+    "focusedTests": {
+      "suites": 8,
+      "passed": 196,
+      "failed": 0
+    },
+    "commitGates": "passed",
+    "prePush": {
+      "passed": 773,
+      "failed": 0
+    },
+    "h3Checks": {
+      "passed": 76,
+      "failed": 0
+    },
+    "independentReview": {
+      "status": "PASS",
+      "reviewedCommit": "12a869ab37167e2bb63f794e60cbd61697e70d71",
+      "findings": "latest lifecycle result wins unless a newer terminal attempt receipt exists; exact timestamp ties retain lifecycle state"
+    },
+    "invariants": [
+      "exact approved snapshot binding",
+      "single explicit Fansly destination with no FANSLY_WALL_IDS fallback",
+      "stable attempt identity",
+      "attempt-ledger insert/update failure prevents provider call",
+      "ambiguous terminal outcome with no automatic retry",
+      "durable/readable result reconciles lifecycle and attempt ledger",
+      "external post ID returned only after confirmed publish"
+    ]
+  },
+  "committedPaths": [
+    "apps/crm-server/src/__tests__/pfm-lifecycle-routes.test.js",
+    "apps/crm-server/src/routes/api/pfm-lifecycle-publication.js",
+    "apps/crm-server/src/routes/api/pfm-lifecycle.routes.js",
+    "apps/crm-server/src/services/post-for-me/publish-bridge/approved-publication-plan.js",
+    "apps/crm-server/src/services/post-for-me/publish-bridge/fansly-provider.js",
+    "apps/crm-server/src/services/post-for-me/runner/attempt-ledger.js",
+    "apps/crm-server/src/services/post-for-me/runner/fansly-lifecycle-adapter.js",
+    "apps/crm-server/src/services/post-for-me/runner/lifecycle-runner.js",
+    "apps/crm-server/src/services/post-for-me/runner/runner-repo.js",
+    "focused tests under those service paths"
+  ],
+  "safety": {
+    "liveFanslyCalls": false,
+    "deployment": false,
+    "activation": false,
+    "schemaOrGrantChanges": false,
+    "credentialsChanged": false
+  },
+  "integratedAt": "2026-09-27T15:26:45.000Z",
+  "followUp": {
+    "status": "DONE",
+    "codeCommits": [
+      "8786f88168ddb51ad22b82eae78157d5be960e47",
+      "12a869ab37167e2bb63f794e60cbd61697e70d71"
+    ],
+    "resolution": "attempt-ledger terminal readback implemented; source ordering fixed with PostgreSQL microsecond timestamp comparison and lifecycle wins exact ties",
+    "focusedTests": 5
+  },
+  "contractCommit": "ace399a035244681027651327523a6ca86065530"
+}

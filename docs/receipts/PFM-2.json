@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "receiptType": "programme-node",
+  "nodeId": "PFM-2",
+  "status": "DONE",
+  "executionId": "integration:codex/pfm-live-integration:5aadb0fadf9cd55d4b32a2673faa3b0f52e8b2e0",
+  "worker": {
+    "kind": "proven-branch-integration",
+    "branch": "codex/pfm-live-integration",
+    "integratedBranch": "main",
+    "finishedAt": "2026-09-27T14:54:14.047Z"
+  },
+  "priorRunnerAttempt": {
+    "runId": "2026-09-27T14-27-16-487Z-637922",
+    "executionId": "2026-09-27T14-27-16-487Z-637922:PFM-2:1",
+    "status": "DONE",
+    "workerExitCode": 0,
+    "blocker": "missing_canonical_publication_plan_contract",
+    "blockerCommit": "7606b2ebcf81bcd6e1f54808203ed29c804a56ac",
+    "receipt": ".graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/PFM-2.json",
+    "stdout": ".graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/PFM-2.stdout.log"
+  },
+  "codeCommit": "5aadb0fadf9cd55d4b32a2673faa3b0f52e8b2e0",
+  "committedPaths": [
+    "components/FeedPostItem.tsx",
+    "components/videoItem/index.tsx",
+    "hooks/useLike.ts",
+    "pages/api/post/like.ts",
+    "pages/api/post/like.test.ts",
+    "types/index.ts",
+    "utils/pfm.ts",
+    "utils/pfm.test.ts",
+    "utils/publication-plan.ts"
+  ],
+  "proof": {
+    "targetedTests": {
+      "passed": 16,
+      "failed": 0
+    },
+    "contract": "exact PublicationPlan/ApprovedPublicationSnapshot shape retained through approval and read",
+    "source": "proven codex/pfm-live-integration branch; focused tests passed before fast-forward integration"
+  },
+  "integration": {
+    "target": "nexus-1-agent/post-for-me authoritative remote main",
+    "commit": "5aadb0fadf9cd55d4b32a2673faa3b0f52e8b2e0",
+    "method": "fast-forward",
+    "remote": "verified by GitHub API",
+    "remoteMain": "cc8e9c37ddbb06988b6e8330d193356c2d15e08a",
+    "remoteEvidence": [
+      "GitHub API refs/heads/main resolves to cc8e9c37ddbb06988b6e8330d193356c2d15e08a",
+      "Remote utils/publication-plan.ts defines schema_version, candidate_id, post_defaults and one explicit Fansly destination with sparse overrides",
+      "Remote pages/api/post/like.ts requires getServerSession and validates candidate_id against both the candidate payload and approved snapshot"
+    ],
+    "equivalence": "5aadb0f is not in remote history; authoritative remote main contains the exact PFM-2 contract plus the guarded approval endpoint, so PFM-2 durability is satisfied by equivalent tree evidence"
+  },
+  "resolvedBlocker": {
+    "code": "missing_canonical_publication_plan_contract",
+    "evidenceCommit": "7606b2ebcf81bcd6e1f54808203ed29c804a56ac",
+    "resolvedBy": "5aadb0fadf9cd55d4b32a2673faa3b0f52e8b2e0"
+  },
+  "integratedAt": "2026-09-27T14:54:14.047Z"
+}

@@ -1,63 +1,113 @@
 {
   "schemaVersion": 1,
-  "revision": 10,
-  "updatedAt": "2026-09-27T14:32:19.539Z",
+  "revision": 27,
+  "updatedAt": "2026-09-27T17:33:33.682Z",
   "nodes": [
     {
       "id": "CRM-1",
-      "status": "FAILED",
-      "worker": "codex exec · pid 645424",
-      "startedAt": "2026-09-27T14:27:16.488Z",
-      "result": "no_existing_ordered_preview_frame_contract: безопасный bounded implementation невозможен по текущему контракту.",
-      "commit": "8c5e292973a6fe04f6538f0504b5448128a67ce0",
-      "proof": "Типизированный node blocker; bounded evidence commit 8c5e292973a6fe04f6538f0504b5448128a67ce0, файл docs/graph-blockers/CRM-1.json; Runner receipt ../.graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/CRM-1.json.",
+      "status": "RUNNING",
+      "worker": "codex exec · pid 212157",
+      "startedAt": "2026-09-27T17:33:30.001Z",
+      "result": null,
+      "commit": null,
+      "proof": null,
       "execution": {
-        "id": "2026-09-27T14-27-16-487Z-637922:CRM-1:1",
+        "id": "2026-09-27T17-33-30-000Z-204061:CRM-1:1",
+        "runId": "2026-09-27T17-33-30-000Z-204061",
+        "worktree": "/home/codexrun/work/post-for-me/craftnode/.graph-runner/2026-09-27T17-33-30-000Z-204061/worktrees/CRM-1",
+        "receipt": ".graph-runner/2026-09-27T17-33-30-000Z-204061/receipts/CRM-1.json",
+        "pid": 212157,
+        "sessionId": "01a0e3ed-e41d-7dc0-a4d4-ab8bf061529b"
+      },
+      "resolvedBlocker": {
         "runId": "2026-09-27T14-27-16-487Z-637922",
-        "worktree": "/home/codexrun/work/post-for-me/.graph-runner/2026-09-27T14-27-16-487Z-637922/worktrees/CRM-1",
-        "receipt": "../.graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/CRM-1.json",
-        "pid": 645424,
-        "sessionId": "01a0e343-696b-7522-abaf-02b4b07c4ea7",
-        "finishedAt": "2026-09-27T14:28:41.986Z",
-        "commit": "8c5e292973a6fe04f6538f0504b5448128a67ce0"
+        "code": "no_existing_ordered_preview_frame_contract",
+        "blockerCommit": "8c5e292973a6fe04f6538f0504b5448128a67ce0",
+        "resolvedBy": [
+          "c74580457ebb15a243352d1aa550e6a45afa4f54",
+          "5aadb0fadf9cd55d4b32a2673faa3b0f52e8b2e0"
+        ]
+      }
+    },
+    {
+      "id": "PFM-AUTH-1",
+      "status": "BLOCKED",
+      "worker": "Read-only independent audit thread 01a0e324-96bd-76c3-9017-b62f417720d1",
+      "startedAt": "2026-09-27T14:56:00.000Z",
+      "result": "The owner adjudicated that single-owner authorization is the existing product decision and no profile-to-Fansly-creator ACL is needed. The exact candidate and immutable PublicationPlan are bound by the current approval contracts. BLOCKED pending wiring/evidence: Post's existing CRM session adapter returns null, so authenticated operator identity is not wired to the existing approval guard.",
+      "commit": null,
+      "proof": "receipts/PFM-AUTH-1.json · read-only audit + owner policy adjudication; no code/schema change. No new auth service/roles/ACL/ownership table.",
+      "execution": {
+        "id": "codex-owner-adjudication:2026-09-27",
+        "workerThreadId": "01a0e324-96bd-76c3-9017-b62f417720d1",
+        "receipt": "receipts/PFM-AUTH-1.json",
+        "finishedAt": "2026-09-27T15:20:57.061Z",
+        "typedBlocker": "missing_authenticated_operator_session_wiring",
+        "adjudication": "single-owner policy removes need for profile-to-creator ACL; existing exact candidate/plan bindings reused"
       }
     },
     {
       "id": "PFM-2",
-      "status": "FAILED",
-      "worker": "codex exec · pid 645509",
+      "status": "DONE",
+      "worker": "Codex runner attempt + independently proven bounded integration",
       "startedAt": "2026-09-27T14:27:20.835Z",
-      "result": "missing_canonical_publication_plan_contract: безопасный bounded implementation невозможен по текущему контракту.",
-      "commit": "7606b2ebcf81bcd6e1f54808203ed29c804a56ac",
-      "proof": "Типизированный node blocker; bounded evidence commit 7606b2ebcf81bcd6e1f54808203ed29c804a56ac, файл docs/graph-blockers/PFM-2.json; Runner receipt ../.graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/PFM-2.json.",
+      "result": "Canonical PublicationPlan approve/read implementation is durable in authoritative nexus-1-agent/post-for-me main at cc8e9c37ddbb06988b6e8330d193356c2d15e08a, verified through GitHub API. Local 5aadb0f is not in remote history, but remote main contains the equivalent exact plan/snapshot contract and guarded approval endpoint.",
+      "commit": "5aadb0fadf9cd55d4b32a2673faa3b0f52e8b2e0",
+      "proof": "receipts/PFM-2.json · 16/16 targeted tests passed on proven branch; approve/read pass-through tests included in integrated commit.",
       "execution": {
-        "id": "2026-09-27T14-27-16-487Z-637922:PFM-2:1",
-        "runId": "2026-09-27T14-27-16-487Z-637922",
-        "worktree": "/home/codexrun/work/post-for-me/.graph-runner/2026-09-27T14-27-16-487Z-637922/worktrees/PFM-2",
-        "receipt": "../.graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/PFM-2.json",
-        "pid": 645509,
-        "sessionId": "01a0e343-6960-7742-a013-b8e29ed8e23c",
-        "finishedAt": "2026-09-27T14:28:31.864Z",
-        "commit": "7606b2ebcf81bcd6e1f54808203ed29c804a56ac"
+        "id": "integration:codex/pfm-live-integration:5aadb0fadf9cd55d4b32a2673faa3b0f52e8b2e0",
+        "branch": "main",
+        "integratedFrom": "codex/pfm-live-integration",
+        "receipt": "receipts/PFM-2.json",
+        "finishedAt": "2026-09-27T14:54:14.047Z",
+        "integrationCommit": "5aadb0fadf9cd55d4b32a2673faa3b0f52e8b2e0",
+        "priorRunnerAttempt": ".graph-runner/2026-09-27T14-27-16-487Z-637922/receipts/PFM-2.json",
+        "priorBlockerCommit": "7606b2ebcf81bcd6e1f54808203ed29c804a56ac",
+        "remoteIntegration": "verified by GitHub API: authoritative main cc8e9c37ddbb06988b6e8330d193356c2d15e08a contains equivalent PublicationPlan/snapshot implementation"
       }
     },
     {
       "id": "PFM-3",
-      "status": "BLOCKED",
-      "worker": null,
-      "startedAt": null,
-      "result": null,
-      "commit": null,
-      "proof": null
+      "status": "DONE",
+      "worker": "Codex programme follow-up thread 01a0dff8-14e5-7391-8805-4209fd2978cd",
+      "startedAt": "2026-09-27T13:54:46.000Z",
+      "result": "Exact approved PublicationPlan is bound to one explicit Fansly lifecycle destination; attempt ledger fails closed before provider calls, records ambiguity, and its durable terminal result is readable with correct latest-result ordering.",
+      "commit": "12a869ab37167e2bb63f794e60cbd61697e70d71",
+      "proof": "receipts/PFM-3.json · 8 focused suites / 196 tests, 773/773 pre-push and 76/76 H3 checks, independent final review PASS.",
+      "execution": {
+        "id": "codex-owner-followup:01a0dff8-14e5-7391-8805-4209fd2978cd",
+        "workerThreadId": "01a0dff8-14e5-7391-8805-4209fd2978cd",
+        "branch": "codex/pfm-pub-plan-bridge",
+        "worktree": "/home/codexrun/.codex/worktrees/pfm-pub-plan-bridge",
+        "receipt": "receipts/PFM-3.json",
+        "finishedAt": "2026-09-27T15:26:45.000Z",
+        "codeCommits": [
+          "1c02b1669bdadf6fcbc15bfc57b2d343684d825c",
+          "3270a8a6c9dda8fda06cca0cd0702395d3dda589",
+          "8786f88168ddb51ad22b82eae78157d5be960e47",
+          "12a869ab37167e2bb63f794e60cbd61697e70d71"
+        ],
+        "contractCommit": "ace399a035244681027651327523a6ca86065530",
+        "integrationCommit": "12a869ab37167e2bb63f794e60cbd61697e70d71",
+        "remoteMainVerified": true
+      },
+      "observations": [
+        {
+          "at": "2026-09-27T15:26:45.000Z",
+          "finding": "durable result had to reconcile lifecycle and attempt-ledger sources",
+          "disposition": "repaired inside PFM-3; no extra node"
+        }
+      ]
     },
     {
       "id": "PFM-4",
       "status": "BLOCKED",
       "worker": null,
       "startedAt": null,
-      "result": null,
+      "result": "Blocked by PFM-AUTH-1 existing-session wiring gap: no Post browser CRM operator session is currently available (crm-session returns null). PFM-2 remote durability, PFM-3 and CRM-1 are proven; no deploy/activation began.",
       "commit": null,
-      "proof": null
+      "proof": "Dependency receipts confirm code completion and Post remote main cc8e9c37. PFM-AUTH-1 adjudication/remaining evidence gap is recorded in receipts/PFM-AUTH-1.json. Production/root apply remains an explicit owner gate.",
+      "execution": null
     },
     {
       "id": "PHONE_VERTICAL_SLICE_PROVEN",
