@@ -1,23 +1,25 @@
 {
   "schemaVersion": 1,
-  "revision": 38,
-  "updatedAt": "2026-09-27T18:15:04.583Z",
+  "revision": 39,
+  "updatedAt": "2026-09-27T18:17:42.699Z",
   "nodes": [
     {
       "id": "CRM-1",
-      "status": "RUNNING",
+      "status": "DONE",
       "worker": "codex exec · pid 4128743",
       "startedAt": "2026-09-27T18:15:00.465Z",
-      "result": null,
-      "commit": null,
-      "proof": null,
+      "result": "Codex worker completed and bounded outputs committed.",
+      "commit": "41442f9fef879724773b2191c7aab4bd2fd3d9d4",
+      "proof": "Bounded output commit 41442f9fef879724773b2191c7aab4bd2fd3d9d4: apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js, apps/crm-server/src/services/post-for-me/media/post-for-me-frame-sequence.js",
       "execution": {
         "id": "2026-09-27T18-15-00-464Z-4124907:CRM-1:1",
         "runId": "2026-09-27T18-15-00-464Z-4124907",
         "worktree": "/home/codexrun/work/post-for-me/craftnode/.graph-runner/2026-09-27T18-15-00-464Z-4124907/worktrees/CRM-1",
         "receipt": ".graph-runner/2026-09-27T18-15-00-464Z-4124907/receipts/CRM-1.json",
         "pid": 4128743,
-        "sessionId": "01a0e413-e608-7a42-9eec-4e945a29c156"
+        "sessionId": "01a0e413-e608-7a42-9eec-4e945a29c156",
+        "finishedAt": "2026-09-27T18:17:42.699Z",
+        "commit": "41442f9fef879724773b2191c7aab4bd2fd3d9d4"
       },
       "resolvedBlocker": {
         "runId": "2026-09-27T14-27-16-487Z-637922",

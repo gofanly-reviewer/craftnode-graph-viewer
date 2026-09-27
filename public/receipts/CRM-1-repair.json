@@ -2,71 +2,65 @@
   "schemaVersion": 1,
   "receiptType": "programme-node",
   "nodeId": "CRM-1",
-  "status": "BLOCKED",
-  "executionId": "2026-09-27T17-33-30-000Z-204061:CRM-1:1",
+  "status": "DONE",
+  "executionId": "2026-09-27T18-15-00-464Z-4124907:CRM-1:1",
   "worker": {
     "kind": "canonical-graph-runner-codex-worker",
-    "threadId": "01a0e3ed-e41d-7dc0-a4d4-ab8bf061529b",
-    "startedAt": "2026-09-27T17:33:30.001Z",
-    "finishedAt": "2026-09-27T17:36:56.086Z"
+    "threadId": "01a0e413-e608-7a42-9eec-4e945a29c156",
+    "startedAt": "2026-09-27T18:15:00.465Z",
+    "finishedAt": "2026-09-27T18:17:42.699Z"
   },
   "source": {
     "repo": "CRM-v0",
-    "ref": "origin/main",
-    "baseSha": "cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3"
+    "baseSha": "b23ab38ed9f2a6a87757bf43680d35de80d625ce",
+    "currentMainAtRecon": "cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
+    "integrationStatus": "candidate commit; not yet integrated into CRM origin/main"
   },
-  "attempts": [
-    {
-      "runId": "2026-09-27T17-28-21-277Z-3876278",
-      "outcome": "No edits; canonical lock store outside worker write roots."
-    },
-    {
-      "runId": "2026-09-27T17-33-30-000Z-204061",
-      "outcome": "No edits; canonical session-claim refused with code 79; required binding/hooks/refusal-store access absent."
-    }
-  ],
-  "blocker": {
-    "type": "authority_stop",
-    "classification": "REAL_AUTHORITY_STOP",
-    "code": "canonical_session_claim_binding_unavailable",
-    "message": "No product edits or tests were made. The exact integrated source remains unchanged.",
-    "evidence": [
-      "Graph Runner receipt .graph-runner/2026-09-27T17-33-30-000Z-204061/receipts/CRM-1.json",
-      "Worker transcript .graph-runner/2026-09-27T17-33-30-000Z-204061/receipts/CRM-1.stdout.log",
-      "Integrated CRM-1 receipt receipts/CRM-1.json"
+  "classification": "EXISTING_CAPABILITY_NOT_WIRED",
+  "resolvedBy": {
+    "commit": "41442f9fef879724773b2191c7aab4bd2fd3d9d4",
+    "paths": [
+      "apps/crm-server/src/services/post-for-me/media/post-for-me-frame-sequence.js",
+      "apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js"
     ],
-    "clearsWhen": "Provide a ratified CRM-1 OPUS_PLAN or canonical assignment binding and dispatch in a claim-ready CRM worktree with its standard hooks and canonical claim/refusal stores accessible."
+    "changes": [
+      "Bind the requested post to its creator account before reading attachments.",
+      "Select the first frame-bearing attachment in position order and keep its media variants together.",
+      "Accept only vault-frames/frames/<same-media-id>_<NN>.jpg from the fixed gofanly-backups remote.",
+      "Keep missing media_id fail-closed; do not backfill or broaden route auth."
+    ]
   },
-  "productWorktree": {
-    "clean": true,
-    "commit": null,
-    "changedPaths": []
+  "proof": {
+    "runnerReceipt": ".graph-runner/2026-09-27T18-15-00-464Z-4124907/receipts/CRM-1.json",
+    "focusedTest": {
+      "command": "yarn vitest run --maxWorkers=1 apps/crm-server/src/services/post-for-me/media/__tests__/post-for-me-frame-sequence.test.js -t '^(?!.*requires the existing API-key auth)'",
+      "result": "7 passed, 1 skipped",
+      "skippedCase": "Existing API-key route integration could not bind a local server: listen EPERM on 0.0.0.0 in this environment."
+    },
+    "integrity": "Canonical Runner committed only the two declared paths in its isolated worktree; hooks were not disabled."
+  },
+  "legacyPathIncompatibility": {
+    "classification": "LEGACY_PATH_INCOMPATIBILITY",
+    "evidence": "CRM CLAUDE.md requires BIFM OPUS_PLAN/session-claim for governed mutations. The owner explicitly selected the isolated canonical Graph Runner fast path and prohibited importing that machinery. Earlier code-79 claim refusal was a legacy-path incompatibility, not a product authority stop.",
+    "disposition": "Used canonical Runner isolated worktree and bounded Git commit; no hook disable, assignment, claim, OPUS_PLAN, or BIFM dispatch."
   },
   "stateTransitions": [
     {
       "status": "READY",
-      "at": "2026-09-27T17:27:00.000Z",
-      "source": "fresh reconciliation + graph reopen"
+      "at": "2026-09-27T18:09:38.549Z",
+      "source": "fresh reconciliation after b23ab38 source review"
     },
     {
       "status": "RUNNING",
-      "at": "2026-09-27T17:28:21.278Z",
-      "executionId": "2026-09-27T17-28-21-277Z-3876278:CRM-1:1",
-      "baseSha": "cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
-      "outcome": "Worker stopped before edits because canonical lock store was inaccessible from its sandbox."
+      "at": "2026-09-27T18:15:00.465Z",
+      "executionId": "2026-09-27T18-15-00-464Z-4124907:CRM-1:1",
+      "baseSha": "b23ab38ed9f2a6a87757bf43680d35de80d625ce"
     },
     {
-      "status": "RUNNING",
-      "at": "2026-09-27T17:33:30.001Z",
-      "executionId": "2026-09-27T17-33-30-000Z-204061:CRM-1:1",
-      "baseSha": "cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
-      "outcome": "Actual Codex worker session started in isolated worktree; Craftnode and GitHub Pages showed RUNNING."
-    },
-    {
-      "status": "BLOCKED",
-      "at": "2026-09-27T17:36:56.086Z",
-      "classification": "REAL_AUTHORITY_STOP",
-      "outcome": "Mandatory session claim refused with code 79; no product edits or tests."
+      "status": "DONE",
+      "at": "2026-09-27T18:17:42.699Z",
+      "commit": "41442f9fef879724773b2191c7aab4bd2fd3d9d4",
+      "result": "Bounded source-binding repair committed; focused unit proof passed."
     }
   ]
 }
