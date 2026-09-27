@@ -41,5 +41,32 @@
     "clean": true,
     "commit": null,
     "changedPaths": []
-  }
+  },
+  "stateTransitions": [
+    {
+      "status": "READY",
+      "at": "2026-09-27T17:27:00.000Z",
+      "source": "fresh reconciliation + graph reopen"
+    },
+    {
+      "status": "RUNNING",
+      "at": "2026-09-27T17:28:21.278Z",
+      "executionId": "2026-09-27T17-28-21-277Z-3876278:CRM-1:1",
+      "baseSha": "cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
+      "outcome": "Worker stopped before edits because canonical lock store was inaccessible from its sandbox."
+    },
+    {
+      "status": "RUNNING",
+      "at": "2026-09-27T17:33:30.001Z",
+      "executionId": "2026-09-27T17-33-30-000Z-204061:CRM-1:1",
+      "baseSha": "cf7adb23c79a5b5b8f7c424f7eda9fdcbf3693f3",
+      "outcome": "Actual Codex worker session started in isolated worktree; Craftnode and GitHub Pages showed RUNNING."
+    },
+    {
+      "status": "BLOCKED",
+      "at": "2026-09-27T17:36:56.086Z",
+      "classification": "REAL_AUTHORITY_STOP",
+      "outcome": "Mandatory session claim refused with code 79; no product edits or tests."
+    }
+  ]
 }
