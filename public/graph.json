@@ -1,10 +1,6 @@
 {
   "title": "Post for Me v0 — путь до проверки на телефоне",
   "source": "Исполняемый граф Architect · единый источник графа",
-  "repositoryRoots": {
-    "CRM-v0": "../../CRM-v0",
-    "post-for-me": ".."
-  },
   "nodes": [
     {
       "id": "CRM-1",
