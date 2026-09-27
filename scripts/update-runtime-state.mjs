@@ -122,12 +122,14 @@ function applyTransition(graph, state, args) {
 }
 
 function publishState() {
+  const branch = run('git', ['branch', '--show-current']);
+  if (branch !== 'main') throw new Error(`Publish runtime state from the main branch; current branch is ${branch}.`);
   run('npm', ['run', 'build:pages']);
   const changed = run('git', ['status', '--porcelain', '--', 'public/runtime-state.json', 'docs']);
   if (!changed) throw new Error('Runtime state did not change; no update was published.');
   run('git', ['add', '--', 'public/runtime-state.json', 'docs']);
   run('git', ['-c', 'user.name=Craftnode Runtime', '-c', 'user.email=craftnode-runtime@users.noreply.github.com', 'commit', '-m', 'runtime: update graph state']);
-  run('git', ['push', 'origin', 'HEAD']);
+  run('git', ['push', 'origin', 'HEAD:main']);
 }
 
 const args = parseArgs(process.argv.slice(2));

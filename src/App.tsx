@@ -50,7 +50,7 @@ type Execution = {
 type GraphNode = {
   id: string;
   title: string;
-  status: Status;
+  status?: Status;
   repo: string;
   outcome: string;
   detail: string;
@@ -71,7 +71,7 @@ type GraphSource = {
   edges: { id: string; source: string; target: string }[];
 };
 
-type FlowNodeData = GraphNode & { label: string };
+type FlowNodeData = Omit<GraphNode, 'status'> & { status: Status; label: string };
 type FlowNode = Node<FlowNodeData, 'graphNode'>;
 
 const NODE_WIDTH = 250;
@@ -122,7 +122,7 @@ function layoutGraph(source: GraphSource, vertical = false): { nodes: FlowNode[]
       id: node.id,
       type: 'graphNode',
       position: positions.get(node.id)!,
-      data: { ...node, label: node.title },
+      data: { ...node, status: node.status ?? 'BLOCKED', label: node.title },
       width: NODE_WIDTH,
       height: NODE_HEIGHT,
       draggable: false,
@@ -184,7 +184,7 @@ function App() {
           throw new Error('Неподдерживаемый формат runtime-state.json.');
         }
         const runtimeById = new Map(runtime.nodes.map((node) => [node.id, node]));
-        if (next.nodes.some((node) => !statuses.includes(node.status) || !runtimeById.has(node.id))) {
+        if (next.nodes.some((node) => (node.status && !statuses.includes(node.status)) || !runtimeById.has(node.id))) {
           throw new Error('Для каждого узла графа нужен поддерживаемый статус в runtime-state.json.');
         }
         if (runtime.nodes.some((node) => !ids.has(node.id) || !statuses.includes(node.status))) {
@@ -198,6 +198,11 @@ function App() {
             const current = runtimeById.get(node.id)!;
             return { ...node, status: current.status, runtime: current };
           }),
+        };
+      } else {
+        liveGraph = {
+          ...next,
+          nodes: next.nodes.map((node) => ({ ...node, status: node.status ?? 'BLOCKED' })),
         };
       }
       if (next.edges.some((edge) => !ids.has(edge.source) || !ids.has(edge.target))) {
@@ -286,7 +291,7 @@ function App() {
           {selectedNode ? <div className="detail-content" key={selectedNode.id}>
             <div className="detail-id">{selectedNode.id}</div>
             <h3>{selectedNode.title}</h3>
-            <div className={`detail-status status-text-${selectedNode.status.toLowerCase()}`}><i />{statusLabels[selectedNode.status]}</div>
+            <div className={`detail-status status-text-${(selectedNode.status ?? 'BLOCKED').toLowerCase()}`}><i />{statusLabels[selectedNode.status ?? 'BLOCKED']}</div>
             {selectedNode.runtime && <div className="detail-section"><span className="field-label">ТЕКУЩИЙ ЗАПУСК</span>
               {selectedNode.runtime.worker && <code>Исполнитель: {selectedNode.runtime.worker}</code>}
               {selectedNode.runtime.startedAt && <code>Начат: {new Date(selectedNode.runtime.startedAt).toLocaleString()}</code>}
